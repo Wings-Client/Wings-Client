@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Il2CppSystem.Collections.Generic;
 using Il2CppSystem.IO;
 using Il2CppSystem.Security.Cryptography;
 using Il2CppSystem.Text;
@@ -49,15 +47,51 @@ namespace WingsClient
                 if (Il2CppImageConversionManager.LoadImage(texture2D, File.ReadAllBytes(path)))
                 {
                     Sprite sprite = Sprite.CreateSprite(texture2D,
-                        new Rect(0f, 0f, (float) texture2D.width, (float) texture2D.height), new Vector2(0.5f, 0.5f),
-                        100f, 0U, 0, default(Vector4), false);
+                        new Rect(0f, 0f, texture2D.width, texture2D.height), new Vector2(0.5f, 0.5f),
+                        100f, 0U, 0, default, false);
                     img.sprite = sprite;
+                    img.color = Color.white;
                 }
             }
             catch (Exception ex)
             {
                 MelonLogger.Msg(ex);
             }
+        }
+        
+        public static class Colors
+        {
+            public static readonly Color primary = new Color(0.34f, 0f, 0.65f);
+            
+            public static readonly Color highlight = new Color(0.8f, 0.8f, 1f);
+            
+            public static readonly Color legendary = new Color(1f, 0.41f, 0.7f);
+            
+            public static readonly Color veteran = new Color(1f, 0.82f, 0f);
+            
+            public static readonly Color trusted = new Color(0.75f, 0.26f, 0.9f);
+            
+            public static readonly Color known = new Color(1f, 0.48f, 0.25f);
+            
+            public static readonly Color user = new Color(0.17f, 0.81f, 0.36f);
+            
+            public static readonly Color newuser = new Color(0.09f, 0.47f, 1f);
+            
+            public static readonly Color visitor = new Color(0.8f, 0.8f, 0.8f);
+            
+            public static readonly Color quest = new Color(0f, 0.87f, 0.25f);
+            
+            public static readonly Color black = new Color(0f, 0f, 0f);
+            
+            public static readonly Color red = new Color(1f, 0f, 0f);
+            
+            public static readonly Color green = new Color(0f, 1f, 0f);
+            
+            public static readonly Color aqua = new Color(0f, 1f, 1f);
+            
+            public static readonly Color orange = new Color(1f, 0.65f, 0f);
+            
+            public static readonly Color white = new Color(1f, 1f, 1f);
         }
     }
 }
