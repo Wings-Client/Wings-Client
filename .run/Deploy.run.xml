@@ -1,0 +1,6 @@
+﻿<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Deploy" type="DotNetFolderPublish" factoryName="Publish to folder">
+    <riderPublish configuration="Release" delete_existing_files="true" platform="Any CPU" runtime="Portable" target_folder="D:/SteamLibrary/steamapps/common/VRChat/Mods" />
+    <method v="2" />
+  </configuration>
+</component>
