@@ -2,15 +2,12 @@
 using Il2CppSystem.IO;
 using MelonLoader;
 using RubyButtonAPI;
-using System.Diagnostics;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
-using Il2CppSystem.Diagnostics;
 using VRC;
 
 namespace WingsClient
-
 {
     public class WingsClient : MelonMod
     {
@@ -42,16 +39,14 @@ namespace WingsClient
             {
                 Directory.CreateDirectory("WingsClient/Texture");
             }
-            new Thread(() =>
-            {
-                Patches.Init(HarmonyInstance.Create("Wings.Patches"));
-            }).Start();
+
+            new Thread(() => { Patches.Init(HarmonyInstance.Create("Wings.Patches")); }).Start();
         }
 
         public override void VRChat_OnUiManagerInit()
         {
             InitButtons();
-            removeAds();
+            RemoveAds();
             //trustNameplates();
         }
 
@@ -76,34 +71,43 @@ namespace WingsClient
             _exploit = new QMNestedButton(_menuButton, 4, 0, "Exploits", "Exploits Menu");
             _settings = new QMNestedButton(_menuButton, 1, 1, "Settings", "Settings Menu");
 
-            Utils.SetImage(_menuButton.getMainButton().getGameObject().GetComponent<Image>(), "WingsClient/textures/icon.png", Color.red);
+            Utils.SetImage(_menuButton.getMainButton().getGameObject().GetComponent<Image>(),
+                "WingsClient/textures/icon.png", Color.red);
             //"https://avatars.githubusercontent.com/u/85594022"
             _espButton = new QMToggleButton(_movement, 1, 0, "ESP\nOn",
-                delegate () { Shared.modules.esp.SetState(true); },
-                "ESP\nOff", delegate () { Shared.modules.esp.SetState(false); }, "ESP");
+                delegate() { Shared.modules.esp.SetState(true); },
+                "ESP\nOff", delegate() { Shared.modules.esp.SetState(false); }, "ESP");
 
             _flightButton = new QMToggleButton(_render, 1, 0, "Flight\nOn",
-                delegate () { Shared.modules.flight.SetState(true); }, "Flight\nOff",
-                delegate () { Shared.modules.flight.SetState(false); }, "Flight");
+                delegate() { Shared.modules.flight.SetState(true); }, "Flight\nOff",
+                delegate() { Shared.modules.flight.SetState(false); }, "Flight");
 
             _trustRankNameplateButton = new QMToggleButton(_settings, 1, 0, "TrustRankNameplate\nOn",
-                delegate () { Shared.modules.trustRankNameplate.SetState(true); }, "TrustRankNameplate\nOff",
-                delegate () { Shared.modules.trustRankNameplate.SetState(false); }, "TrustRankNameplate");
+                delegate() { Shared.modules.trustRankNameplate.SetState(true); }, "TrustRankNameplate\nOff",
+                delegate() { Shared.modules.trustRankNameplate.SetState(false); }, "TrustRankNameplate");
 
             _askForPortal = new QMToggleButton(_settings, 1, 0, "AskForPortal\nOn",
-                delegate () { Shared.modules.askForPortal = true; }, "AskForPortal\nOff",
-                delegate () { Shared.modules.askForPortal = false; }, "AskForPortal");
+                delegate() { Shared.modules.askForPortal = true; }, "AskForPortal\nOff",
+                delegate() { Shared.modules.askForPortal = false; }, "AskForPortal");
 
-            _rejoinButton = new QMSingleButton(_world, 1, 0, "Rejoin", delegate () {
-                VRCFlowManager.prop_VRCFlowManager_0.Method_Public_Void_String_String_WorldTransitionInfo_Action_1_String_Boolean_0(RoomManager.field_Internal_Static_ApiWorld_0.id, RoomManager.field_Internal_Static_ApiWorldInstance_0.idWithTags);
-            }, "Rejoin World");
+            _rejoinButton = new QMSingleButton(_world, 1, 0, "Rejoin",
+                delegate()
+                {
+                    VRCFlowManager.prop_VRCFlowManager_0
+                        .Method_Public_Void_String_String_WorldTransitionInfo_Action_1_String_Boolean_0(
+                            RoomManager.field_Internal_Static_ApiWorld_0.id,
+                            RoomManager.field_Internal_Static_ApiWorldInstance_0.idWithTags);
+                }, "Rejoin World");
 
-            _teleport = new QMSingleButton("UserInteractMenu", 1, 3, "Teleport", delegate () {
-                Player.prop_Player_0.transform.position = QuickMenu.prop_QuickMenu_0.field_Private_Player_0.transform.position;
-            }, "Teleport");
+            _teleport = new QMSingleButton("UserInteractMenu", 1, 3, "Teleport",
+                delegate()
+                {
+                    Player.prop_Player_0.transform.position =
+                        QuickMenu.prop_QuickMenu_0.field_Private_Player_0.transform.position;
+                }, "Teleport");
         }
 
-        private void removeAds()
+        private static void RemoveAds()
         {
             GameObject.Destroy(QuickMenu.prop_QuickMenu_0.transform.Find("ShortcutMenu/HeaderContainer/VRCPlusBanner")
                 .gameObject);
@@ -118,8 +122,6 @@ namespace WingsClient
 
         private static void ForceQuit()
         {
-            Application.Quit();
-            Thread.Sleep(2500);
             System.Diagnostics.Process.GetCurrentProcess().Kill();
         }
     }

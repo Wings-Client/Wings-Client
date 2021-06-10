@@ -58,9 +58,12 @@ namespace WingsClient
             }
         }
 
-        public static void AlertV2(string title, string Content, string buttonname, Action action, string button2, Action action2)
+        public static void AlertV2(string title, string Content, string buttonname, Action action, string button2,
+            Action action2)
         {
-            VRCUiPopupManager.field_Private_Static_VRCUiPopupManager_0.Method_Public_Void_String_String_String_Action_String_Action_Action_1_VRCUiPopup_2(title, Content, buttonname, action, button2, action2, null);
+            VRCUiPopupManager.field_Private_Static_VRCUiPopupManager_0
+                .Method_Public_Void_String_String_String_Action_String_Action_Action_1_VRCUiPopup_2(title, Content,
+                    buttonname, action, button2, action2, null);
         }
 
         public static class Colors

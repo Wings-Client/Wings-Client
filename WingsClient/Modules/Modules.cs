@@ -38,7 +38,7 @@ namespace WingsClient.Modules
                 this.modules[i].OnPlayerLeft(player);
             }
         }
-        
+
         public void OnUnload()
         {
             for (int i = 0; i < this.modules.Count; i++)
@@ -46,7 +46,7 @@ namespace WingsClient.Modules
                 this.modules[i].OnUnload();
             }
         }
-        
+
         public void OnUpdate()
         {
             for (int i = 0; i < this.modules.Count; i++)

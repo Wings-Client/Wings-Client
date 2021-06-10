@@ -9,6 +9,7 @@ namespace WingsClient.Modules
     public class Flight : BaseModule
     {
         private VRCMotionState componentCache;
+
         public override void OnStateChange(bool state)
         {
             Player.prop_Player_0.GetComponent<CharacterController>().enabled = !state;

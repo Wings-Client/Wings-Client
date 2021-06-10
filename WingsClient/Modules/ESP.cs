@@ -9,7 +9,6 @@ namespace WingsClient.Modules
     {
         public override void OnStateChange(bool state)
         {
-            
             foreach (Player player in PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0)
             {
                 Esp.HighlightPlayer(player, state);
