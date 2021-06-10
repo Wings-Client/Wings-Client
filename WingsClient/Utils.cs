@@ -57,39 +57,44 @@ namespace WingsClient
                 MelonLogger.Error(ex);
             }
         }
-        
+
+        public static void AlertV2(string title, string Content, string buttonname, Action action, string button2, Action action2)
+        {
+            VRCUiPopupManager.field_Private_Static_VRCUiPopupManager_0.Method_Public_Void_String_String_String_Action_String_Action_Action_1_VRCUiPopup_2(title, Content, buttonname, action, button2, action2, null);
+        }
+
         public static class Colors
         {
             public static readonly Color primary = new Color(0.34f, 0f, 0.65f);
-            
+
             public static readonly Color highlight = new Color(0.8f, 0.8f, 1f);
-            
+
             public static readonly Color legendary = new Color(1f, 0.41f, 0.7f);
-            
+
             public static readonly Color veteran = new Color(1f, 0.82f, 0f);
-            
+
             public static readonly Color trusted = new Color(0.75f, 0.26f, 0.9f);
-            
+
             public static readonly Color known = new Color(1f, 0.48f, 0.25f);
-            
+
             public static readonly Color user = new Color(0.17f, 0.81f, 0.36f);
-            
+
             public static readonly Color newuser = new Color(0.09f, 0.47f, 1f);
-            
+
             public static readonly Color visitor = new Color(0.8f, 0.8f, 0.8f);
-            
+
             public static readonly Color quest = new Color(0f, 0.87f, 0.25f);
-            
+
             public static readonly Color black = new Color(0f, 0f, 0f);
-            
+
             public static readonly Color red = new Color(1f, 0f, 0f);
-            
+
             public static readonly Color green = new Color(0f, 1f, 0f);
-            
+
             public static readonly Color aqua = new Color(0f, 1f, 1f);
-            
+
             public static readonly Color orange = new Color(1f, 0.65f, 0f);
-            
+
             public static readonly Color white = new Color(1f, 1f, 1f);
         }
     }

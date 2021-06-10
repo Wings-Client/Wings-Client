@@ -8,11 +8,14 @@ namespace WingsClient.Modules
         public List<BaseModule> modules = new List<BaseModule>();
         public Esp esp;
         public Flight flight;
+        public TrustRankNameplate trustRankNameplate;
+        public bool askForPortal;
 
         public Modules()
         {
             this.modules.Add(this.esp = new Esp());
             this.modules.Add(this.flight = new Flight());
+            this.modules.Add(this.trustRankNameplate = new TrustRankNameplate());
         }
 
         public void StartCoroutines()
