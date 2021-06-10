@@ -3,8 +3,6 @@ using MelonLoader;
 using RubyButtonAPI;
 using UnityEngine;
 using UnityEngine.UI;
-using VRC;
-using WingsClient.Modules;
 
 namespace WingsClient
 
@@ -29,7 +27,7 @@ namespace WingsClient
         {
             InitButtons();
             removeAds();
-            trustNameplates();
+            //trustNameplates();
         }
 
         public override void OnUpdate()
@@ -37,16 +35,15 @@ namespace WingsClient
             Shared.modules.OnUpdate();
         }
 
+
         private void InitButtons()
         {
-            _menuButton = new QMNestedButton("ShortcutMenu", 5, -1, "", "Wings Client Menu");
-            Utils.SetImage(_menuButton.getMainButton().getGameObject().GetComponent<Image>(),
-                "WingsClient/textures/icon.png");
-
+            _menuButton = new QMNestedButton("ShortcutMenu", 0, 0, "", "Wings Client Menu");
+            Utils.SetImage(_menuButton.getMainButton().getGameObject().GetComponent<Image>(), "WingsClient/textures/icon.png", Color.red);
+            //"https://avatars.githubusercontent.com/u/85594022"
             _espButton = new QMToggleButton(_menuButton, 1, 0, "ESP\nOn",
                 delegate() { Shared.modules.esp.SetState(true); },
                 "ESP\nOff", delegate() { Shared.modules.esp.SetState(false); }, "ESP");
-
             _flightButton = new QMToggleButton(_menuButton, 2, 0, "Flight\nOn",
                 delegate() { Shared.modules.flight.SetState(true); }, "Flight\nOff",
                 delegate() { Shared.modules.flight.SetState(false); }, "Flight");
@@ -54,14 +51,15 @@ namespace WingsClient
 
         private void removeAds()
         {
-            GameObject.Destroy(QuickMenu.prop_QuickMenu_0.transform.Find("ShortcutMenu/HeaderContainer/VRCPlusBanner").gameObject);
+            GameObject.Destroy(QuickMenu.prop_QuickMenu_0.transform.Find("ShortcutMenu/HeaderContainer/VRCPlusBanner")
+                .gameObject);
             GameObject.Destroy(QuickMenu.prop_QuickMenu_0.transform.Find("ShortcutMenu/VRCPlusMiniBanner").gameObject);
             GameObject.Destroy(GameObject.Find("MenuContent/Backdrop/Header/Tabs/ViewPort/Content/VRC+PageTab"));
         }
 
         private void trustNameplates()
         {
-            VRCPlayer.Method_Public_Static_Color_APIUser_0(Player.prop_Player_0.prop_APIUser_0);
+            //VRCPlayer.Method_Public_Static_Color_APIUser_0(Player.prop_Player_0.prop_APIUser_0); //this is literally not the way to do it so I'm just dumb.
         }
     }
 }

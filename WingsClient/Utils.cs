@@ -39,23 +39,22 @@ namespace WingsClient
             }
         }
 
-        public static void SetImage(Image img, string path)
+        public static void SetImage(Image img, string path, Color color)
         {
             try
             {
                 Texture2D texture2D = new Texture2D(2, 2);
-                if (Il2CppImageConversionManager.LoadImage(texture2D, File.ReadAllBytes(path)))
-                {
-                    Sprite sprite = Sprite.CreateSprite(texture2D,
-                        new Rect(0f, 0f, texture2D.width, texture2D.height), new Vector2(0.5f, 0.5f),
-                        100f, 0U, 0, default, false);
-                    img.sprite = sprite;
-                    img.color = Color.white;
-                }
+                if (!Il2CppImageConversionManager.LoadImage(texture2D, File.ReadAllBytes(path))) return;
+                Sprite sprite = Sprite.CreateSprite(texture2D,
+                    new Rect(0f, 0f, texture2D.width, texture2D.height), new Vector2(0.5f, 0.5f),
+                    100f, 0U, 0, default, false);
+                img.sprite = sprite;
+                img.color = color;
+                img.m_Color = color;
             }
             catch (Exception ex)
             {
-                MelonLogger.Msg(ex);
+                MelonLogger.Error(ex);
             }
         }
         
