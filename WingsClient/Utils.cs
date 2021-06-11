@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using Il2CppSystem.IO;
 using Il2CppSystem.Security.Cryptography;
 using Il2CppSystem.Text;
@@ -55,6 +56,14 @@ namespace WingsClient
             catch (Exception ex)
             {
                 MelonLogger.Error(ex);
+            }
+        }
+
+        public static void SaveImage(string fileName, string webLocation)
+        {
+            using (WebClient webClient = new WebClient())
+            {
+                webClient.DownloadFile(webLocation, fileName);
             }
         }
 

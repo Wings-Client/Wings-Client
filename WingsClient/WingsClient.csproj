@@ -518,12 +518,14 @@
     <Compile Include="External\RubyButtonAPI.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Modules\BaseModule.cs" />
+    <Compile Include="Modules\ItemESP.cs" />
     <Compile Include="Modules\TrustRankNameplate.cs" />
     <Compile Include="Modules\ESP.cs" />
     <Compile Include="Modules\Flight.cs" />
     <Compile Include="Modules\Modules.cs" />
     <Compile Include="Patches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Shared.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>

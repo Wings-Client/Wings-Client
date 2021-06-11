@@ -1,4 +1,6 @@
-﻿using Harmony;
+﻿using System;
+using System.Diagnostics;
+using Harmony;
 using Il2CppSystem.IO;
 using MelonLoader;
 using RubyButtonAPI;
@@ -14,6 +16,7 @@ namespace WingsClient
         private QMNestedButton _menuButton;
 
         private QMSingleButton _forceQuitButton;
+        private QMSingleButton _forceRestartButton;
 
         private QMSingleButton _teleport;
 
@@ -22,6 +25,7 @@ namespace WingsClient
 
         private QMNestedButton _render;
         private QMToggleButton _espButton;
+        private QMToggleButton _itemESPButton;
 
         private QMNestedButton _world;
         private QMSingleButton _rejoinButton;
@@ -34,11 +38,10 @@ namespace WingsClient
 
         public override void OnApplicationStart()
         {
+            InitFolders();
+
             Shared.modules = new Modules.Modules();
-            if (!Directory.Exists("WingsClient/Texture"))
-            {
-                Directory.CreateDirectory("WingsClient/Texture");
-            }
+            Shared.settings = new Settings();
 
             new Thread(() => { Patches.Init(HarmonyInstance.Create("Wings.Patches")); }).Start();
         }
@@ -47,7 +50,6 @@ namespace WingsClient
         {
             InitButtons();
             RemoveAds();
-            //trustNameplates();
         }
 
         public override void OnUpdate()
@@ -55,15 +57,20 @@ namespace WingsClient
             Shared.modules.OnUpdate();
         }
 
+        public override void OnSceneWasLoaded(int buildIndex, string sceneName)
+        {
+            Shared.modules.OnLevelLoad();
+        }
+
 
         private void InitButtons()
         {
-            _menuButton = new QMNestedButton("ShortcutMenu", 0, 0, "", "Wings Client Menu");
+            QuickMenu.prop_QuickMenu_0.GetComponent<BoxCollider>().size += new Vector3(QuickMenu.prop_QuickMenu_0.GetComponent<BoxCollider>().size.x / 2.75f, QuickMenu.prop_QuickMenu_0.GetComponent<BoxCollider>().size.y / 2.25f);
+            _menuButton = new QMNestedButton("ShortcutMenu", 1, -2, "", "Wings Client Menu", Color.white, Color.white);
             Utils.SetImage(_menuButton.getMainButton().getGameObject().GetComponent<Image>(),
-                "WingsClient/textures/icon.png", Color.red);
+                "WingsClient/textures/icon.png", Color.white);
+            Utils.SetImage(QuickMenu.prop_QuickMenu_0.transform.Find("QuickMenu_NewElements/_Background/Panel").GetComponent<Image>(), "WingsClient/textures/background.png", new Color(0.75f, 0.75f, 0.75f, 0.75f));
             //"https://avatars.githubusercontent.com/u/85594022"
-            _forceQuitButton = new QMSingleButton("Force Quit", 0, 1, "Force Quit", delegate { ForceQuit(); },
-                "Force quit the game immediately");
 
             _movement = new QMNestedButton(_menuButton, 1, 0, "Movement", "Movement Menu");
             _render = new QMNestedButton(_menuButton, 2, 0, "Renderer", "Render Menu");
@@ -71,14 +78,15 @@ namespace WingsClient
             _exploit = new QMNestedButton(_menuButton, 4, 0, "Exploits", "Exploits Menu");
             _settings = new QMNestedButton(_menuButton, 1, 1, "Settings", "Settings Menu");
 
-            Utils.SetImage(_menuButton.getMainButton().getGameObject().GetComponent<Image>(),
-                "WingsClient/textures/icon.png", Color.red);
-            //"https://avatars.githubusercontent.com/u/85594022"
-            _espButton = new QMToggleButton(_movement, 1, 0, "ESP\nOn",
+            _espButton = new QMToggleButton(_render, 1, 0, "ESP\nOn",
                 delegate() { Shared.modules.esp.SetState(true); },
                 "ESP\nOff", delegate() { Shared.modules.esp.SetState(false); }, "ESP");
 
-            _flightButton = new QMToggleButton(_render, 1, 0, "Flight\nOn",
+            _itemESPButton = new QMToggleButton(_render, 2, 0, "Item ESP\nOn",
+                delegate() { Shared.modules.itemEsp.SetState(true); },
+                "Item ESP\nOff", delegate() { Shared.modules.itemEsp.SetState(false); }, "Item ESP");
+
+            _flightButton = new QMToggleButton(_movement, 1, 0, "Flight\nOn",
                 delegate() { Shared.modules.flight.SetState(true); }, "Flight\nOff",
                 delegate() { Shared.modules.flight.SetState(false); }, "Flight");
 
@@ -86,7 +94,7 @@ namespace WingsClient
                 delegate() { Shared.modules.trustRankNameplate.SetState(true); }, "TrustRankNameplate\nOff",
                 delegate() { Shared.modules.trustRankNameplate.SetState(false); }, "TrustRankNameplate");
 
-            _askForPortal = new QMToggleButton(_settings, 1, 0, "AskForPortal\nOn",
+            _askForPortal = new QMToggleButton(_settings, 2, 0, "AskForPortal\nOn",
                 delegate() { Shared.modules.askForPortal = true; }, "AskForPortal\nOff",
                 delegate() { Shared.modules.askForPortal = false; }, "AskForPortal");
 
@@ -105,6 +113,35 @@ namespace WingsClient
                     Player.prop_Player_0.transform.position =
                         QuickMenu.prop_QuickMenu_0.field_Private_Player_0.transform.position;
                 }, "Teleport");
+
+            _forceQuitButton = new QMSingleButton("ShortcutMenu", 0, 3, "Force Quit", delegate { ForceQuit(); },
+                "Force quit the game immediately");
+
+            _forceRestartButton = new QMSingleButton("ShortcutMenu", 5, 3, "Force Restart", delegate { ForceRestart(); },
+                "Force quit the game immediately");
+        }
+
+        private static void InitFolders()
+        {
+            if (!Directory.Exists("WingsClient"))
+            {
+                Directory.CreateDirectory("WingsClient");
+            }
+
+            if (!Directory.Exists("WingsClient/textures"))
+            {
+                Directory.CreateDirectory("WingsClient/textures");
+            }
+
+            if (!File.Exists("WingsClient/textures/icon.png"))
+            {
+                Utils.SaveImage("WingsClient/textures/icon.png", "https://avatars.githubusercontent.com/u/85594022");
+            }
+            
+            if (!File.Exists("WingsClient/textures/background.png"))
+            {
+                Utils.SaveImage("WingsClient/textures/background.png", "https://i.imgur.com/E5jQqTx.png");
+            }
         }
 
         private static void RemoveAds()
@@ -115,14 +152,22 @@ namespace WingsClient
             GameObject.Destroy(GameObject.Find("MenuContent/Backdrop/Header/Tabs/ViewPort/Content/VRC+PageTab"));
         }
 
-        private void trustNameplates()
-        {
-            //VRCPlayer.Method_Public_Static_Color_APIUser_0(Player.prop_Player_0.prop_APIUser_0); //this is literally not the way to do it so I'm just dumb.
-        }
-
         private static void ForceQuit()
         {
             System.Diagnostics.Process.GetCurrentProcess().Kill();
+        }
+        
+        private static void ForceRestart()
+        {
+            try
+            {
+                Process.Start(Environment.CurrentDirectory + "\\VRChat.exe", Environment.CommandLine);
+            }
+            catch (Exception)
+            {
+                new Exception();
+            }
+            Process.GetCurrentProcess().Kill();
         }
     }
 }

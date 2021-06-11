@@ -9,6 +9,7 @@ namespace WingsClient.Modules
         public Esp esp;
         public Flight flight;
         public TrustRankNameplate trustRankNameplate;
+        public ItemESP itemEsp;
         public bool askForPortal;
 
         public Modules()
@@ -16,6 +17,7 @@ namespace WingsClient.Modules
             this.modules.Add(this.esp = new Esp());
             this.modules.Add(this.flight = new Flight());
             this.modules.Add(this.trustRankNameplate = new TrustRankNameplate());
+            this.modules.Add(this.itemEsp = new ItemESP());
         }
 
         public void StartCoroutines()
@@ -36,6 +38,14 @@ namespace WingsClient.Modules
             for (int i = 0; i < this.modules.Count; i++)
             {
                 this.modules[i].OnPlayerLeft(player);
+            }
+        }
+
+        public void OnLevelLoad()
+        {
+            for (int i = 0; i < this.modules.Count; i++)
+            {
+                this.modules[i].OnLevelWasLoaded();
             }
         }
 

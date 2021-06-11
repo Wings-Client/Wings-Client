@@ -14,8 +14,7 @@ namespace WingsClient.Modules
                 Esp.HighlightPlayer(player, state);
             }
         }
-
-        // Token: 0x0600006D RID: 109 RVA: 0x00005744 File Offset: 0x00003944
+        
         public override void OnConfigLoaded()
         {
             foreach (Player player in PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0)
@@ -23,14 +22,12 @@ namespace WingsClient.Modules
                 Esp.HighlightPlayer(player, this.state);
             }
         }
-
-        // Token: 0x0600006E RID: 110 RVA: 0x0000577C File Offset: 0x0000397C
+        
         public override void OnPlayerJoined(Player player)
         {
             MelonCoroutines.Start(this.Delay(player));
         }
-
-        // Token: 0x0600006F RID: 111 RVA: 0x0000578B File Offset: 0x0000398B
+        
         public IEnumerator Delay(Player player)
         {
             if (player == null)
@@ -49,8 +46,7 @@ namespace WingsClient.Modules
             Esp.HighlightPlayer(player, this.state);
             yield break;
         }
-
-        // Token: 0x06000070 RID: 112 RVA: 0x000057A1 File Offset: 0x000039A1
+        
         public IEnumerator DelayRefresh()
         {
             yield return null;
@@ -61,8 +57,7 @@ namespace WingsClient.Modules
 
             yield break;
         }
-
-        // Token: 0x06000071 RID: 113 RVA: 0x000057B0 File Offset: 0x000039B0
+        
         public static void HighlightPlayer(Player player, bool state)
         {
             Renderer renderer;
