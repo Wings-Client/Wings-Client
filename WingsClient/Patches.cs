@@ -22,20 +22,6 @@ namespace WingsClient
 
         public static void Init(Harmony.HarmonyInstance harmony)
         {
-            try
-            {
-                ForceClone = new QMSingleButton("UserInteractMenu", 5, 0, "Clone", delegate() { }, null, null, null);
-                harmony.Patch(typeof(UserInteractMenu).GetMethod("Update"),
-                new HarmonyMethod(AccessTools.Method(typeof(Patches), nameof(CloneUpdate))), null,
-                null);
-            MelonLogger.Msg("[Patch] ForceClone");
-        }
-        catch
-
-        {
-            MelonLogger.Msg(ConsoleColor.Red, "[Patch] ForceClone Error while Patching");
-        }
-
     try
     {
     harmony.Patch(typeof(SystemInfo).GetProperty("deviceUniqueIdentifier")?.GetGetMethod(),
@@ -281,47 +267,6 @@ private static bool VoidPatchTrue(bool __result)
 private static bool VoidPatchFalse(bool __result)
 {
     __result = false;
-    return false;
-}
-
-private static bool CloneUpdate(UserInteractMenu userInteractMenu)
-{
-    if (Patches.ForceClone != null)
-    {
-        if (QuickMenu.prop_QuickMenu_0.prop_APIUser_0 != null)
-        {
-            if (QuickMenu.prop_QuickMenu_0.field_Public_MenuController_0.activeAvatar
-                .releaseStatus == "private")
-            {
-                Patches.ForceClone.setButtonText("Cannot Clone");
-                Patches.ForceClone.setTextColor(Color.white, true);
-                Patches.ForceClone.setBackgroundColor(Color.red, true);
-                Patches.ForceClone.setAction(delegate { });
-            }
-            else if (!QuickMenu.prop_QuickMenu_0.prop_APIUser_0
-                .allowAvatarCopying)
-            {
-                Patches.ForceClone.setButtonText("Force Clone");
-                Patches.ForceClone.setTextColor(Color.red, true);
-                Patches.ForceClone.setBackgroundColor(Color.cyan, true);
-                Patches.ForceClone.setAction(delegate { userInteractMenu.field_Public_Button_1.onClick.Invoke(); });
-            }
-            else
-            {
-                Patches.ForceClone.setButtonText("Clone");
-                Patches.ForceClone.setTextColor(Color.green, true);
-                Patches.ForceClone.setBackgroundColor(Color.cyan, true);
-                Patches.ForceClone.setAction(delegate { userInteractMenu.field_Public_Button_1.onClick.Invoke(); });
-            }
-        }
-    }
-    else
-    {
-        userInteractMenu.field_Public_Button_1.gameObject.transform.localScale = new Vector3(0f, 0f, 0f);
-        Patches.ForceClone = new QMSingleButton("UserInteractMenu", 5, 0, "Clone",
-            delegate() { userInteractMenu.field_Public_Button_1.onClick.Invoke(); }, null, null, null);
-    }
-
     return false;
 }
 }
