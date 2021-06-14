@@ -31,6 +31,7 @@ namespace WingsClient
         private QMSingleButton _rejoinButton;
 
         private QMNestedButton _exploit;
+        private QMSingleButton _downloadVRCA;
 
         private QMNestedButton _settings;
         private QMToggleButton _trustRankNameplateButton;
@@ -66,11 +67,13 @@ namespace WingsClient
         private void InitButtons()
         {
             QuickMenu.prop_QuickMenu_0.GetComponent<BoxCollider>().size += new Vector3(QuickMenu.prop_QuickMenu_0.GetComponent<BoxCollider>().size.x / 2.75f, QuickMenu.prop_QuickMenu_0.GetComponent<BoxCollider>().size.y / 2.25f);
-            _menuButton = new QMNestedButton("ShortcutMenu", 1, -2, "", "Wings Client Menu", Color.white, Color.white);
+            _menuButton = new QMNestedButton("ShortcutMenu", 0, 0, "", "Wings Client Menu", Color.white, Color.white);
             Utils.SetImage(_menuButton.getMainButton().getGameObject().GetComponent<Image>(),
                 "WingsClient/textures/icon.png", Color.white);
             Utils.SetImage(QuickMenu.prop_QuickMenu_0.transform.Find("QuickMenu_NewElements/_Background/Panel").GetComponent<Image>(), "WingsClient/textures/background.png", new Color(0.75f, 0.75f, 0.75f, 0.75f));
             //"https://avatars.githubusercontent.com/u/85594022"
+            
+            //_menuButton.getMainButton().setIntractable();
 
             _movement = new QMNestedButton(_menuButton, 1, 0, "Movement", "Movement Menu");
             _render = new QMNestedButton(_menuButton, 2, 0, "Renderer", "Render Menu");
@@ -114,11 +117,14 @@ namespace WingsClient
                         QuickMenu.prop_QuickMenu_0.field_Private_Player_0.transform.position;
                 }, "Teleport");
 
+            _downloadVRCA = new QMSingleButton(_exploit, 1, 0, "Download VRCA", delegate{Application.OpenURL(VRCPlayer.field_Internal_Static_VRCPlayer_0.prop_ApiAvatar_0.assetUrl);}, "Download VRCA of avatar");
+            //Application.OpenURL(VRCPlayer.field_Internal_Static_VRCPlayer_0.Method_Public_get_ApiAvatar_1().assetUrl);
+
             _forceQuitButton = new QMSingleButton("ShortcutMenu", 0, 3, "Force Quit", delegate { ForceQuit(); },
                 "Force quit the game immediately");
 
             _forceRestartButton = new QMSingleButton("ShortcutMenu", 5, 3, "Force Restart", delegate { ForceRestart(); },
-                "Force quit the game immediately");
+                "Force restart the game");
         }
 
         private static void InitFolders()
