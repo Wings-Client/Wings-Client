@@ -44,10 +44,9 @@ namespace WingsClient
 
         public override void OnApplicationStart()
         {
-            InitFolders();
-
-            Shared.modules = new Modules.Modules();
             Shared.settings = new Settings();
+            InitFolders();
+            Shared.modules = new Modules.Modules();
             Shared.utils = new Utils();
 
             new Thread(() => { Patches.Init(HarmonyInstance.Create("Wings.Patches")); }).Start();
@@ -109,10 +108,10 @@ namespace WingsClient
                 delegate() { Shared.modules.speed.SetState(false); }, "Speed");
 
             _speedUp = new QMSingleButton(_movement, 0, 0, "Speed\n+",
-                delegate { Speed.ChangeModifier (0.1f); }, "Speed Up");
-            
+                delegate { Speed.ChangeModifier(0.1f); }, "Speed Up");
+
             _speedDown = new QMSingleButton(_movement, 0, 1, "Speed\n-",
-                delegate { Speed.ChangeModifier (-0.1f); }, "Speed Down");
+                delegate { Speed.ChangeModifier(-0.1f); }, "Speed Down");
 
             _trustRankNameplateButton = new QMToggleButton(_settings, 1, 0, "TrustRankNameplate\nOn",
                 delegate()
@@ -204,6 +203,12 @@ namespace WingsClient
             if (!File.Exists("WingsClient/textures/background.png"))
             {
                 Shared.utils.SaveImage("WingsClient/textures/background.png", "https://i.imgur.com/E5jQqTx.png");
+            }
+
+            if (!File.Exists(Settings.SettingsPath))
+            {
+                File.Create(Settings.SettingsPath).Close();
+                MelonLogger.Msg("Created empty settings file.");
             }
         }
 

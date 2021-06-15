@@ -1,5 +1,4 @@
-﻿
-namespace WingsClient
+﻿namespace WingsClient
 {
     public class Shared
     {

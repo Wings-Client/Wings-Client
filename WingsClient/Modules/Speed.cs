@@ -26,7 +26,7 @@
             Speed.Modifier += modifier;
         }
 
-    public override void OnUpdate()
+        public override void OnUpdate()
         {
             if (!this.state) return;
             if (RoomManager.field_Internal_Static_ApiWorld_0 == null)

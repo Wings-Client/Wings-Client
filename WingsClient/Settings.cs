@@ -6,16 +6,7 @@ namespace WingsClient
 {
     public class Settings
     {
-        private const string SettingsPath = "WingsClient/Settings.ini";
-
-        public Settings()
-        {
-            if (!File.Exists(SettingsPath))
-            {
-                File.Create(SettingsPath).Close();
-                MelonLogger.Msg("Created empty settings file.");
-            }
-        }
+        public const string SettingsPath = "WingsClient/Settings.ini";
 
         public void SetSetting(string key, string newValue)
         {
@@ -54,6 +45,7 @@ namespace WingsClient
                     return line.Split('=')[1];
                 }
             }
+
             StreamWriter stream = File.AppendText(SettingsPath);
             stream.WriteLineAsync(key + '=' + defaultKey);
             stream.Close();

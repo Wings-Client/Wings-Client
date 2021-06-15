@@ -14,7 +14,7 @@ namespace WingsClient.Modules
                 Esp.HighlightPlayer(player, state);
             }
         }
-        
+
         public override void OnConfigLoaded()
         {
             foreach (Player player in PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0)
@@ -22,12 +22,12 @@ namespace WingsClient.Modules
                 Esp.HighlightPlayer(player, this.state);
             }
         }
-        
+
         public override void OnPlayerJoined(Player player)
         {
             MelonCoroutines.Start(this.Delay(player));
         }
-        
+
         public IEnumerator Delay(Player player)
         {
             if (player == null)
@@ -46,7 +46,7 @@ namespace WingsClient.Modules
             Esp.HighlightPlayer(player, this.state);
             yield break;
         }
-        
+
         public IEnumerator DelayRefresh()
         {
             yield return null;
@@ -57,7 +57,7 @@ namespace WingsClient.Modules
 
             yield break;
         }
-        
+
         public static void HighlightPlayer(Player player, bool state)
         {
             Renderer renderer;
