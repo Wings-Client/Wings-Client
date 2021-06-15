@@ -117,7 +117,7 @@ namespace WingsClient
             _speedReset = new QMSingleButton(_movement, 1, 1, "Speed\nReset",
                 delegate
                 {
-                    VRCPlayer.field_Internal_Static_VRCPlayer_0.prop_VRCPlayerApi_0
+                    VRCPlayer.field_Internal_Static_VRCPlayer_0.prop_VRCPlayerApi_0 
                         .SetWalkSpeed(2f);
                     VRCPlayer.field_Internal_Static_VRCPlayer_0.prop_VRCPlayerApi_0
                         .SetRunSpeed(4f);
@@ -175,7 +175,7 @@ namespace WingsClient
             //Application.OpenURL(VRCPlayer.field_Internal_Static_VRCPlayer_0.Method_Public_get_ApiAvatar_1().assetUrl);
 
             _amongUsExploit =
-                new QMToggleButton(_exploit, 2, 0, "Among Us/nOn", delegate { }, "Among Us/nOff", delegate { },
+                new QMToggleButton(_exploit, 2, 0, "Among Us\nOn", delegate { }, "Among Us\nOff", delegate { },
                     "WIP, Please be patient fuck face");
 
 
