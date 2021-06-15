@@ -226,9 +226,9 @@ namespace WingsClient
             {
                 Process.Start(Environment.CurrentDirectory + "\\VRChat.exe", Environment.CommandLine);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                new Exception();
+                MelonLogger.Error(e.Message);
             }
 
             Process.GetCurrentProcess().Kill();
