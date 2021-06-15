@@ -26,6 +26,7 @@ namespace WingsClient
         private QMToggleButton _speed;
         private QMSingleButton _speedUp;
         private QMSingleButton _speedDown;
+        private QMSingleButton _speedReset;
 
         private QMNestedButton _render;
         private QMToggleButton _espButton;
@@ -99,19 +100,32 @@ namespace WingsClient
                 delegate() { Shared.modules.itemEsp.SetState(true); },
                 "Item ESP\nOff", delegate() { Shared.modules.itemEsp.SetState(false); }, "Item ESP");
 
-            _flightButton = new QMToggleButton(_movement, 1, 0, "Flight\nOn",
+            _flightButton = new QMToggleButton(_movement, 2, 0, "Flight\nOn",
                 delegate() { Shared.modules.flight.SetState(true); }, "Flight\nOff",
                 delegate() { Shared.modules.flight.SetState(false); }, "Flight");
 
-            _speed = new QMToggleButton(_movement, 2, 0, "Speed\nOn",
+            _speed = new QMToggleButton(_movement, 2, 1, "Speed\nOn",
                 delegate() { Shared.modules.speed.SetState(true); }, "Speed\nOff",
                 delegate() { Shared.modules.speed.SetState(false); }, "Speed");
 
-            _speedUp = new QMSingleButton(_movement, 0, 0, "Speed\n+",
+            _speedUp = new QMSingleButton(_movement, 1, 0, "Speed\n+",
                 delegate { Speed.ChangeModifier(0.1f); }, "Speed Up");
 
-            _speedDown = new QMSingleButton(_movement, 0, 1, "Speed\n-",
+            _speedDown = new QMSingleButton(_movement, 1, 2, "Speed\n-",
                 delegate { Speed.ChangeModifier(-0.1f); }, "Speed Down");
+//This isn't working atm still looking into it
+            _speedReset = new QMSingleButton(_movement, 1, 1, "Speed\nReset",
+                delegate
+                {
+                    VRCPlayer.field_Internal_Static_VRCPlayer_0.prop_VRCPlayerApi_0
+                        .SetWalkSpeed(2f);
+                    VRCPlayer.field_Internal_Static_VRCPlayer_0.prop_VRCPlayerApi_0
+                        .SetRunSpeed(4f);
+                    VRCPlayer.field_Internal_Static_VRCPlayer_0.prop_VRCPlayerApi_0
+                        .SetStrafeSpeed(2f);
+                    ;
+                }, "SpeedReset");
+
 
             _trustRankNameplateButton = new QMToggleButton(_settings, 1, 0, "TrustRankNameplate\nOn",
                 delegate()
