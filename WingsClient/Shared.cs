@@ -5,6 +5,7 @@ namespace WingsClient
     {
         public static Modules.Modules modules;
         public static Settings settings;
+        public static Utils utils;
 
         public static string[] meshBlacklist;
         public static string[] avatarBlacklist;

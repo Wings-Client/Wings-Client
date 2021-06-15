@@ -45,7 +45,7 @@ namespace WingsClient
             stream.Close();
         }
 
-        public string GetSetting(string key)
+        public string GetSetting(string key, string defaultKey)
         {
             foreach (string line in File.ReadAllLines(SettingsPath))
             {
@@ -54,8 +54,10 @@ namespace WingsClient
                     return line.Split('=')[1];
                 }
             }
-
-            return null;
+            StreamWriter stream = File.AppendText(SettingsPath);
+            stream.WriteLineAsync(key + '=' + defaultKey);
+            stream.Close();
+            return defaultKey;
         }
     }
 }

@@ -40,7 +40,7 @@ namespace WingsClient
             }
         }
 
-        public static void SetImage(Image img, string path, Color color)
+        public void SetImage(Image img, string path, Color color)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace WingsClient
             }
         }
 
-        public static void SaveImage(string fileName, string webLocation)
+        public void SaveImage(string fileName, string webLocation)
         {
             using (WebClient webClient = new WebClient())
             {

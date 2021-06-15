@@ -43,6 +43,7 @@ namespace WingsClient
 
             Shared.modules = new Modules.Modules();
             Shared.settings = new Settings();
+            Shared.utils = new Utils();
 
             new Thread(() => { Patches.Init(HarmonyInstance.Create("Wings.Patches")); }).Start();
         }
@@ -66,13 +67,18 @@ namespace WingsClient
 
         private void InitButtons()
         {
-            QuickMenu.prop_QuickMenu_0.GetComponent<BoxCollider>().size += new Vector3(QuickMenu.prop_QuickMenu_0.GetComponent<BoxCollider>().size.x / 2.75f, QuickMenu.prop_QuickMenu_0.GetComponent<BoxCollider>().size.y / 2.25f);
+            QuickMenu.prop_QuickMenu_0.GetComponent<BoxCollider>().size += new Vector3(
+                QuickMenu.prop_QuickMenu_0.GetComponent<BoxCollider>().size.x / 2.75f,
+                QuickMenu.prop_QuickMenu_0.GetComponent<BoxCollider>().size.y / 2.25f);
             _menuButton = new QMNestedButton("ShortcutMenu", 0, 0, "", "Wings Client Menu", Color.white, Color.white);
-            Utils.SetImage(_menuButton.getMainButton().getGameObject().GetComponent<Image>(),
+            Shared.utils.SetImage(_menuButton.getMainButton().getGameObject().GetComponent<Image>(),
                 "WingsClient/textures/icon.png", Color.white);
-            Utils.SetImage(QuickMenu.prop_QuickMenu_0.transform.Find("QuickMenu_NewElements/_Background/Panel").GetComponent<Image>(), "WingsClient/textures/background.png", new Color(0.75f, 0.75f, 0.75f, 0.75f));
+            Shared.utils.SetImage(
+                QuickMenu.prop_QuickMenu_0.transform.Find("QuickMenu_NewElements/_Background/Panel")
+                    .GetComponent<Image>(), "WingsClient/textures/background.png",
+                new Color(0.75f, 0.75f, 0.75f, 0.75f));
             //"https://avatars.githubusercontent.com/u/85594022"
-            
+
             //_menuButton.getMainButton().setIntractable();
 
             _movement = new QMNestedButton(_menuButton, 1, 0, "Movement", "Movement Menu");
@@ -94,12 +100,28 @@ namespace WingsClient
                 delegate() { Shared.modules.flight.SetState(false); }, "Flight");
 
             _trustRankNameplateButton = new QMToggleButton(_settings, 1, 0, "TrustRankNameplate\nOn",
-                delegate() { Shared.modules.trustRankNameplate.SetState(true); }, "TrustRankNameplate\nOff",
-                delegate() { Shared.modules.trustRankNameplate.SetState(false); }, "TrustRankNameplate");
+                delegate()
+                {
+                    Shared.modules.trustRankNameplate.SetState(true);
+                    Shared.settings.SetSetting("trustRankNameplate", "true");
+                }, "TrustRankNameplate\nOff",
+                delegate()
+                {
+                    Shared.modules.trustRankNameplate.SetState(false);
+                    Shared.settings.SetSetting("trustRankNameplate", "false");
+                }, "TrustRankNameplate");
 
             _askForPortal = new QMToggleButton(_settings, 2, 0, "AskForPortal\nOn",
-                delegate() { Shared.modules.askForPortal = true; }, "AskForPortal\nOff",
-                delegate() { Shared.modules.askForPortal = false; }, "AskForPortal");
+                delegate()
+                {
+                    Shared.modules.askForPortal = true;
+                    Shared.settings.SetSetting("askForPortal", "true");
+                }, "AskForPortal\nOff",
+                delegate()
+                {
+                    Shared.modules.askForPortal = false;
+                    Shared.settings.SetSetting("askForPortal", "false");
+                }, "AskForPortal");
 
             _rejoinButton = new QMSingleButton(_world, 1, 0, "Rejoin",
                 delegate()
@@ -117,14 +139,27 @@ namespace WingsClient
                         QuickMenu.prop_QuickMenu_0.field_Private_Player_0.transform.position;
                 }, "Teleport");
 
-            _downloadVRCA = new QMSingleButton(_exploit, 1, 0, "Download VRCA", delegate{Application.OpenURL(VRCPlayer.field_Internal_Static_VRCPlayer_0.prop_ApiAvatar_0.assetUrl);}, "Download VRCA of avatar");
+            _downloadVRCA = new QMSingleButton(_exploit, 1, 0, "Download VRCA",
+                delegate
+                {
+                    Application.OpenURL(VRCPlayer.field_Internal_Static_VRCPlayer_0.prop_ApiAvatar_0.assetUrl);
+                }, "Download VRCA of avatar");
             //Application.OpenURL(VRCPlayer.field_Internal_Static_VRCPlayer_0.Method_Public_get_ApiAvatar_1().assetUrl);
 
             _forceQuitButton = new QMSingleButton("ShortcutMenu", 0, 3, "Force Quit", delegate { ForceQuit(); },
                 "Force quit the game immediately");
 
-            _forceRestartButton = new QMSingleButton("ShortcutMenu", 5, 3, "Force Restart", delegate { ForceRestart(); },
+            _forceRestartButton = new QMSingleButton("ShortcutMenu", 5, 3, "Force Restart",
+                delegate { ForceRestart(); },
                 "Force restart the game");
+
+            bool trustNamePlate;
+            bool askForPortal;
+            bool.TryParse(Shared.settings.GetSetting("trustRankNameplate", "false"), out trustNamePlate);
+            bool.TryParse(Shared.settings.GetSetting("askForPortal", "false"), out askForPortal);
+
+            _trustRankNameplateButton.setToggleState(trustNamePlate);
+            _askForPortal.setToggleState(askForPortal);
         }
 
         private static void InitFolders()
@@ -141,12 +176,13 @@ namespace WingsClient
 
             if (!File.Exists("WingsClient/textures/icon.png"))
             {
-                Utils.SaveImage("WingsClient/textures/icon.png", "https://avatars.githubusercontent.com/u/85594022");
+                Shared.utils.SaveImage("WingsClient/textures/icon.png",
+                    "https://avatars.githubusercontent.com/u/85594022");
             }
-            
+
             if (!File.Exists("WingsClient/textures/background.png"))
             {
-                Utils.SaveImage("WingsClient/textures/background.png", "https://i.imgur.com/E5jQqTx.png");
+                Shared.utils.SaveImage("WingsClient/textures/background.png", "https://i.imgur.com/E5jQqTx.png");
             }
         }
 
@@ -160,9 +196,9 @@ namespace WingsClient
 
         private static void ForceQuit()
         {
-            System.Diagnostics.Process.GetCurrentProcess().Kill();
+            Process.GetCurrentProcess().Kill();
         }
-        
+
         private static void ForceRestart()
         {
             try
@@ -173,6 +209,7 @@ namespace WingsClient
             {
                 new Exception();
             }
+
             Process.GetCurrentProcess().Kill();
         }
     }

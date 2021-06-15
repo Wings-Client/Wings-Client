@@ -92,7 +92,9 @@ namespace WingsClient
         private static bool EnterPortal(PortalTrigger instance)
         {
             if (!Shared.modules.askForPortal)
+            {
                 return true;
+            }
 
             Utils.AlertV2("Portal", "Do you want to enter?", "Enter",
                 new Action(() =>
