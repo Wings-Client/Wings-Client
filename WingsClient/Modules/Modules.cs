@@ -8,6 +8,7 @@ namespace WingsClient.Modules
         public List<BaseModule> modules = new List<BaseModule>();
         public Esp esp;
         public Flight flight;
+        public Speed speed;
         public TrustRankNameplate trustRankNameplate;
         public ItemESP itemEsp;
         public bool askForPortal;
@@ -18,6 +19,7 @@ namespace WingsClient.Modules
             this.modules.Add(this.flight = new Flight());
             this.modules.Add(this.trustRankNameplate = new TrustRankNameplate());
             this.modules.Add(this.itemEsp = new ItemESP());
+            this.modules.Add(this.speed = new Speed());
         }
 
         public void StartCoroutines()

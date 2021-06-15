@@ -8,6 +8,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC;
+using WingsClient.Modules;
 
 namespace WingsClient
 {
@@ -22,6 +23,9 @@ namespace WingsClient
 
         private QMNestedButton _movement;
         private QMToggleButton _flightButton;
+        private QMToggleButton _speed;
+        private QMSingleButton _speedUp;
+        private QMSingleButton _speedDown;
 
         private QMNestedButton _render;
         private QMToggleButton _espButton;
@@ -32,6 +36,7 @@ namespace WingsClient
 
         private QMNestedButton _exploit;
         private QMSingleButton _downloadVRCA;
+        private QMToggleButton _amongUsExploit;
 
         private QMNestedButton _settings;
         private QMToggleButton _trustRankNameplateButton;
@@ -99,6 +104,16 @@ namespace WingsClient
                 delegate() { Shared.modules.flight.SetState(true); }, "Flight\nOff",
                 delegate() { Shared.modules.flight.SetState(false); }, "Flight");
 
+            _speed = new QMToggleButton(_movement, 2, 0, "Speed\nOn",
+                delegate() { Shared.modules.speed.SetState(true); }, "Speed\nOff",
+                delegate() { Shared.modules.speed.SetState(false); }, "Speed");
+
+            _speedUp = new QMSingleButton(_movement, 0, 0, "Speed\n+",
+                delegate { Speed.ChangeModifier (0.1f); }, "Speed Up");
+            
+            _speedDown = new QMSingleButton(_movement, 0, 1, "Speed\n-",
+                delegate { Speed.ChangeModifier (-0.1f); }, "Speed Down");
+
             _trustRankNameplateButton = new QMToggleButton(_settings, 1, 0, "TrustRankNameplate\nOn",
                 delegate()
                 {
@@ -146,12 +161,18 @@ namespace WingsClient
                 }, "Download VRCA of avatar");
             //Application.OpenURL(VRCPlayer.field_Internal_Static_VRCPlayer_0.Method_Public_get_ApiAvatar_1().assetUrl);
 
+            _amongUsExploit =
+                new QMToggleButton(_exploit, 2, 0, "Among Us/nOn", delegate { }, "Among Us/nOff", delegate { },
+                    "WIP, Please be patient fuck face");
+
+
             _forceQuitButton = new QMSingleButton("ShortcutMenu", 0, 3, "Force Quit", delegate { ForceQuit(); },
                 "Force quit the game immediately");
 
             _forceRestartButton = new QMSingleButton("ShortcutMenu", 5, 3, "Force Restart",
                 delegate { ForceRestart(); },
                 "Force restart the game");
+
 
             bool trustNamePlate;
             bool askForPortal;
