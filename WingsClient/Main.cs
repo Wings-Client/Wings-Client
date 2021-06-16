@@ -31,14 +31,15 @@ namespace WingsClient
         private QMNestedButton _render;
         private QMToggleButton _espButton;
         private QMToggleButton _itemESPButton;
-        
+
 
         private QMNestedButton _world;
         private QMSingleButton _rejoinButton;
 
         private QMNestedButton _exploit;
+
         private QMSingleButton _downloadVRCA;
-        private QMToggleButton _amongUsExploit;
+        //private QMToggleButton _amongUsExploit;
 
         private QMNestedButton _settings;
         private QMToggleButton _trustRankNameplateButton;
@@ -119,7 +120,7 @@ namespace WingsClient
             _speedReset = new QMSingleButton(_movement, 1, 1, "Speed\nReset",
                 delegate
                 {
-                    VRCPlayer.field_Internal_Static_VRCPlayer_0.prop_VRCPlayerApi_0 
+                    VRCPlayer.field_Internal_Static_VRCPlayer_0.prop_VRCPlayerApi_0
                         .SetWalkSpeed(2f);
                     VRCPlayer.field_Internal_Static_VRCPlayer_0.prop_VRCPlayerApi_0
                         .SetRunSpeed(4f);
@@ -153,8 +154,11 @@ namespace WingsClient
                     Shared.settings.SetSetting("askForPortal", "false");
                 }, "AskForPortal");
 
-            _fpsUnlocker = new QMToggleButton(_settings, 1, 1,"FPSunlocked\nOn", delegate {  }, )
-            
+            _fpsUnlocker = new QMToggleButton(_settings, 1, 1, "FPS Unlocked",
+                delegate { Shared.modules.fpsUnlocker.SetState(true); }, "FPS Locked",
+                delegate { Shared.modules.fpsUnlocker.SetState(false); },
+                "Unlock the FPS (set in settings)");
+
             _rejoinButton = new QMSingleButton(_world, 1, 0, "Rejoin",
                 delegate()
                 {
