@@ -519,7 +519,9 @@
     <Compile Include="External\RubyButtonAPI.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Modules\BaseModule.cs" />
+    <Compile Include="Modules\FPSUnlocked.cs" />
     <Compile Include="Modules\ItemESP.cs" />
+    <Compile Include="Modules\Speed.cs" />
     <Compile Include="Modules\TrustRankNameplate.cs" />
     <Compile Include="Modules\ESP.cs" />
     <Compile Include="Modules\Flight.cs" />
