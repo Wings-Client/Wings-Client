@@ -31,6 +31,7 @@ namespace WingsClient
         private QMNestedButton _render;
         private QMToggleButton _espButton;
         private QMToggleButton _itemESPButton;
+        
 
         private QMNestedButton _world;
         private QMSingleButton _rejoinButton;
@@ -42,6 +43,7 @@ namespace WingsClient
         private QMNestedButton _settings;
         private QMToggleButton _trustRankNameplateButton;
         private QMToggleButton _askForPortal;
+        private QMToggleButton _fpsUnlocker;
 
         public override void OnApplicationStart()
         {
@@ -151,6 +153,8 @@ namespace WingsClient
                     Shared.settings.SetSetting("askForPortal", "false");
                 }, "AskForPortal");
 
+            _fpsUnlocker = new QMToggleButton(_settings, 1, 1,"FPSunlocked\nOn", delegate {  }, )
+            
             _rejoinButton = new QMSingleButton(_world, 1, 0, "Rejoin",
                 delegate()
                 {
@@ -174,9 +178,9 @@ namespace WingsClient
                 }, "Download VRCA of avatar");
             //Application.OpenURL(VRCPlayer.field_Internal_Static_VRCPlayer_0.Method_Public_get_ApiAvatar_1().assetUrl);
 
-            _amongUsExploit =
-                new QMToggleButton(_exploit, 2, 0, "Among Us\nOn", delegate { }, "Among Us\nOff", delegate { },
-                    "WIP, Please be patient fuck face");
+            //_amongUsExploit =
+            //    new QMToggleButton(_exploit, 2, 0, "Among Us\nOn", delegate { }, "Among Us\nOff", delegate { },
+            //        "WIP, Please be patient fuck face");
 
 
             _forceQuitButton = new QMSingleButton("ShortcutMenu", 0, 3, "Force Quit", delegate { ForceQuit(); },
