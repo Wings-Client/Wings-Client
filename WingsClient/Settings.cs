@@ -12,7 +12,7 @@ namespace WingsClient
         {
             foreach (string line in File.ReadAllLines(SettingsPath))
             {
-                if (key.Contains(line.Split('=')[0].Trim().ToLower()))
+                if (key.Contains(line.Split('=')[0].Trim()))
                 {
                     var originalLines = File.ReadAllLines(SettingsPath);
                     var updatedLines = new List<string>();
@@ -40,7 +40,7 @@ namespace WingsClient
         {
             foreach (string line in File.ReadAllLines(SettingsPath))
             {
-                if (key.Contains(line.Split('=')[0].Trim().ToLower()))
+                if (key.Contains(line.Split('=')[0].Trim()))
                 {
                     return line.Split('=')[1];
                 }

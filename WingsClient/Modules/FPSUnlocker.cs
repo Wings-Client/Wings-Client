@@ -14,7 +14,7 @@ namespace WingsClient.Modules
             }
             else
             {
-                Shared.settings.SetSetting("FPSLimit", "200");
+                Application.targetFrameRate = 60;
             }
         }
     }
