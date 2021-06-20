@@ -37,8 +37,8 @@ namespace WingsClient
         private QMSingleButton _rejoinButton;
 
         private QMNestedButton _exploit;
-
         private QMSingleButton _downloadVRCA;
+        private QMToggleButton _itemOrbit;
         //private QMToggleButton _amongUsExploit;
 
         private QMNestedButton _settings;
@@ -180,10 +180,13 @@ namespace WingsClient
                 {
                     Application.OpenURL(VRCPlayer.field_Internal_Static_VRCPlayer_0.prop_ApiAvatar_0.assetUrl);
                 }, "Download VRCA of avatar");
-            //Application.OpenURL(VRCPlayer.field_Internal_Static_VRCPlayer_0.Method_Public_get_ApiAvatar_1().assetUrl);
+            _itemOrbit = new QMToggleButton(_exploit, 1, 1, "Item Orbit\nOn",
+                delegate { Shared.modules.itemOrbit.SetState(true); }, "Item Orbit\nOff",
+                delegate { Shared.modules.itemOrbit.SetState(false); },
+                "Items rotate around your feet");
 
             //_amongUsExploit =
-            //    new QMToggleButton(_exploit, 2, 0, "Among Us\nOn", delegate { }, "Among Us\nOff", delegate { },
+            //    new QMToggleButton(_exploit, 1, 2, "Among Us\nOn", delegate { }, "Among Us\nOff", delegate { },
             //        "WIP, Please be patient fuck face");
 
 

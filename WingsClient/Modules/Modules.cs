@@ -12,6 +12,7 @@ namespace WingsClient.Modules
         public TrustRankNameplate trustRankNameplate;
         public ItemESP itemEsp;
         public FPSUnlocker fpsUnlocker;
+        public ItemOrbit itemOrbit;
         public bool askForPortal;
 
         public Modules()
@@ -22,6 +23,7 @@ namespace WingsClient.Modules
             this.modules.Add(this.itemEsp = new ItemESP());
             this.modules.Add(this.speed = new Speed());
             this.modules.Add(this.fpsUnlocker = new FPSUnlocker());
+            this.modules.Add(this.itemOrbit = new ItemOrbit());
         }
 
         public void StartCoroutines()
