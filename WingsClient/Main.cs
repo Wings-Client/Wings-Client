@@ -38,12 +38,14 @@ namespace WingsClient
 
         private QMNestedButton _exploit;
         private QMSingleButton _downloadVRCA;
+
         private QMToggleButton _itemOrbit;
         //private QMToggleButton _amongUsExploit;
 
         private QMNestedButton _settings;
         private QMToggleButton _trustRankNameplateButton;
         private QMToggleButton _askForPortal;
+
         private QMToggleButton _fpsUnlocker;
         //private QMToggleButton _hideSelf;
 
@@ -159,7 +161,7 @@ namespace WingsClient
                 delegate { Shared.modules.fpsUnlocker.SetState(true); }, "FPS Locked",
                 delegate { Shared.modules.fpsUnlocker.SetState(false); },
                 "Unlock the FPS (set in settings)");
-           
+
             //_hideSelf = new QMToggleButton(_settings, 2, 1,"HidesSelf\nOn",
             //    delegate() { Shared.modules.hideSelf.SetState(true); }, "HideSelf\nOff",
             //    delegate() { Shared.modules.hideSelf.SetState(false); }, "Hides your self");
@@ -183,15 +185,17 @@ namespace WingsClient
             _downloadVRCA = new QMSingleButton("UserInteractMenu", 3, 3, "Download VRCA",
                 delegate
                 {
-                    Application.OpenURL(QuickMenu.prop_QuickMenu_0.field_Private_Player_0.prop_VRCPlayer_0.prop_ApiAvatar_1.assetUrl);
+                    Application.OpenURL(QuickMenu.prop_QuickMenu_0.field_Private_Player_0.prop_VRCPlayer_0
+                        .prop_ApiAvatar_1.assetUrl);
                 }, "Download VRCA of avatar");
 
-           
-            _downloadVRCA = new QMSingleButton(_exploit, 1, 0, "Download VRCA", delegate
-            {
-                Application.OpenURL(VRCPlayer.field_Internal_Static_VRCPlayer_0.prop_ApiAvatar_1.assetUrl);
-            }, "download VRCA");
-            
+
+            _downloadVRCA = new QMSingleButton(_exploit, 1, 0, "Download VRCA",
+                delegate
+                {
+                    Application.OpenURL(VRCPlayer.field_Internal_Static_VRCPlayer_0.prop_ApiAvatar_1.assetUrl);
+                }, "download VRCA");
+
             _itemOrbit = new QMToggleButton(_exploit, 1, 1, "Item Orbit\nOn",
                 delegate { Shared.modules.itemOrbit.SetState(true); }, "Item Orbit\nOff",
                 delegate { Shared.modules.itemOrbit.SetState(false); },
