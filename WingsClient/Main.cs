@@ -45,6 +45,7 @@ namespace WingsClient
         private QMToggleButton _trustRankNameplateButton;
         private QMToggleButton _askForPortal;
         private QMToggleButton _fpsUnlocker;
+        private QMToggleButton _hideSelf;
 
         public override void OnApplicationStart()
         {
@@ -158,6 +159,10 @@ namespace WingsClient
                 delegate { Shared.modules.fpsUnlocker.SetState(true); }, "FPS Locked",
                 delegate { Shared.modules.fpsUnlocker.SetState(false); },
                 "Unlock the FPS (set in settings)");
+           
+            _hideSelf = new QMToggleButton(_settings, 2, 1,"HidesSelf\nOn",
+                delegate() { Shared.modules.hideSelf.SetState(true); }, "HideSelf\nOff",
+                delegate() { Shared.modules.hideSelf.SetState(false); }, "Hides your self");
 
             _rejoinButton = new QMSingleButton(_world, 1, 0, "Rejoin",
                 delegate()
