@@ -15,7 +15,7 @@ namespace WingsClient.Modules
         public FPSUnlocker fpsUnlocker;
         public ItemOrbit itemOrbit;
         public bool askForPortal;
-        public HideSelf hideSelf;
+        //public HideSelf hideSelf;
 
         public Modules()
         {
@@ -26,7 +26,7 @@ namespace WingsClient.Modules
             this.modules.Add(this.speed = new Speed());
             this.modules.Add(this.fpsUnlocker = new FPSUnlocker());
             this.modules.Add(this.itemOrbit = new ItemOrbit());
-            this.modules.Add(this.hideSelf = new HideSelf());
+            //this.modules.Add(this.hideSelf = new HideSelf());
         }
 
         public void StartCoroutines()
