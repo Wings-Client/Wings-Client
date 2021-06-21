@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using VRC;
 using VRC.SDKBase;
 
 namespace WingsClient.Modules
@@ -30,7 +31,10 @@ namespace WingsClient.Modules
 
             GameObject puppet = new GameObject();
             
-            puppet.transform.position = VRCPlayer.field_Internal_Static_VRCPlayer_0.transform.position + new Vector3(0, 0.2f, 0);
+            if (Shared.annoy)
+                puppet.transform.position = (Shared.TargetPlayer?.field_Private_VRCPlayerApi_0 ?? Networking.LocalPlayer).GetTrackingData(VRCPlayerApi.TrackingDataType.Head).position;
+            else
+                puppet.transform.position = (Shared.TargetPlayer?.transform.position ?? VRCPlayer.field_Internal_Static_VRCPlayer_0.transform.position) + new Vector3(0, 0.2f, 0);
 
             puppet.transform.Rotate(new Vector3(0, 360f * Time.time * speed, 0));
 
@@ -49,6 +53,12 @@ namespace WingsClient.Modules
         public void Recache()
         {
             cached = Object.FindObjectsOfType<VRC_Pickup>();
+        }
+        
+        public override void OnPlayerLeft(Player player)
+        {
+            if (Shared.TargetPlayer == player)
+                Shared.TargetPlayer = null;
         }
     }
 }

@@ -15,7 +15,6 @@ namespace WingsClient
     public class WingsClient : MelonMod
     {
         private QMNestedButton _menuButton;
-
         private QMSingleButton _forceQuitButton;
         private QMSingleButton _forceRestartButton;
 
@@ -40,6 +39,8 @@ namespace WingsClient
         private QMSingleButton _downloadVRCA;
 
         private QMToggleButton _itemOrbit;
+
+        private QMToggleButton _annoyUser;
         //private QMToggleButton _amongUsExploit;
 
         private QMNestedButton _settings;
@@ -49,13 +50,15 @@ namespace WingsClient
         private QMToggleButton _fpsUnlocker;
         //private QMToggleButton _hideSelf;
 
+        private QMSingleButton _targetPlayer;
+
         public override void OnApplicationStart()
         {
             Shared.settings = new Settings();
+            Shared.utils = new Utils();
             InitFolders();
             Shared.modules = new Modules.Modules();
-            Shared.utils = new Utils();
-
+            
             new Thread(() => { Patches.Init(HarmonyInstance.Create("Wings.Patches")); }).Start();
         }
 
@@ -182,6 +185,7 @@ namespace WingsClient
                         QuickMenu.prop_QuickMenu_0.field_Private_Player_0.transform.position;
                 }, "Teleport");
 
+
             _downloadVRCA = new QMSingleButton("UserInteractMenu", 3, 3, "Download VRCA",
                 delegate
                 {
@@ -196,13 +200,17 @@ namespace WingsClient
                     Application.OpenURL(VRCPlayer.field_Internal_Static_VRCPlayer_0.prop_ApiAvatar_1.assetUrl);
                 }, "download VRCA");
 
-            _itemOrbit = new QMToggleButton(_exploit, 1, 1, "Item Orbit\nOn",
+            _itemOrbit = new QMToggleButton(_exploit, 2, 0, "Item Orbit\nOn",
                 delegate { Shared.modules.itemOrbit.SetState(true); }, "Item Orbit\nOff",
                 delegate { Shared.modules.itemOrbit.SetState(false); },
                 "Items rotate around your feet");
+            _annoyUser = new QMToggleButton(_exploit, 3, 0, "Annoy User\nOn",
+                delegate { Shared.annoy = true; }, "Annoy User\nOff",
+                delegate { Shared.annoy = false; },
+                "Annoys the user you're running commands on");
 
             //_amongUsExploit =
-            //    new QMToggleButton(_exploit, 1, 2, "Among Us\nOn", delegate { }, "Among Us\nOff", delegate { },
+            //    new QMToggleButton(_exploit, 1, 1, "Among Us\nOn", delegate { }, "Among Us\nOff", delegate { },
             //        "WIP, Please be patient fuck face");
 
 
@@ -212,6 +220,13 @@ namespace WingsClient
             _forceRestartButton = new QMSingleButton("ShortcutMenu", 5, 3, "Force Restart",
                 delegate { ForceRestart(); },
                 "Force restart the game");
+            //Shared.TargetPlayer = Utils.GetPlayer(QuickMenu.prop_QuickMenu_0.field_Private_APIUser_0.displayName);
+            _targetPlayer = new QMSingleButton("UserInteractMenu", 2, 3, "Target User",
+                delegate
+                {
+                    Shared.TargetPlayer =
+                        Utils.GetPlayer(QuickMenu.prop_QuickMenu_0.field_Private_APIUser_0.displayName);
+                }, "Targets the player for certain actions");
 
 
             bool trustNamePlate;
@@ -228,22 +243,25 @@ namespace WingsClient
             if (!Directory.Exists("WingsClient"))
             {
                 Directory.CreateDirectory("WingsClient");
+                MelonLogger.Msg("Created Directory 'WingsClient'");
             }
 
             if (!Directory.Exists("WingsClient/textures"))
             {
                 Directory.CreateDirectory("WingsClient/textures");
+                MelonLogger.Msg("Created Directory 'WingsClient/textures'");
             }
-
             if (!File.Exists("WingsClient/textures/icon.png"))
             {
                 Shared.utils.SaveImage("WingsClient/textures/icon.png",
-                    "https://avatars.githubusercontent.com/u/85594022");
+                    "https://i.imgur.com/ru5Dshr.png");
+                MelonLogger.Msg("Created File 'WingsClient/textures/icon.png'");
             }
 
             if (!File.Exists("WingsClient/textures/background.png"))
             {
                 Shared.utils.SaveImage("WingsClient/textures/background.png", "https://i.imgur.com/E5jQqTx.png");
+                MelonLogger.Msg("Created File 'WingsClient/textures/background.png'");
             }
 
             if (!File.Exists(Settings.SettingsPath))

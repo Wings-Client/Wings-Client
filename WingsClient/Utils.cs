@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using Il2CppSystem.Collections.Generic;
 using Il2CppSystem.IO;
 using Il2CppSystem.Security.Cryptography;
 using Il2CppSystem.Text;
@@ -63,7 +64,15 @@ namespace WingsClient
         {
             using (WebClient webClient = new WebClient())
             {
-                webClient.DownloadFile(webLocation, fileName);
+                Uri uri = new Uri(webLocation);
+                try
+                {
+                    webClient.DownloadFileAsync(uri, fileName);
+                }
+                catch (Exception e)
+                {
+                    MelonLogger.Error(e.StackTrace);
+                }
             }
         }
 
@@ -73,6 +82,21 @@ namespace WingsClient
             VRCUiPopupManager.field_Private_Static_VRCUiPopupManager_0
                 .Method_Public_Void_String_String_String_Action_String_Action_Action_1_VRCUiPopup_2(title, Content,
                     buttonname, action, button2, action2, null);
+        }
+        
+        public static Player GetPlayer(string name)
+        {
+            List<Player> players = PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0;
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                if (players[i].prop_APIUser_0.displayName == name)
+                {
+                    return players[i];
+                }
+            }
+
+            return null;
         }
 
         public static class Colors
