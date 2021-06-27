@@ -16,6 +16,11 @@ namespace WingsClient
         
         private static Player targetPlayer;
 
+        public static class Events
+        {
+            public static Action OnUpdate = new Action(() => { });
+        }
+        
         public static Player TargetPlayer { 
             get => targetPlayer; 
             set { 
