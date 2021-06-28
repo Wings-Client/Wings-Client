@@ -37,11 +37,12 @@ namespace WingsClient
 
         private QMNestedButton _exploit;
         private QMSingleButton _downloadVRCA;
-
         private QMToggleButton _itemOrbit;
 
         private QMToggleButton _annoyUser;
+
         //private QMToggleButton _amongUsExploit;
+        private QMToggleButton _freezePickups;
 
         private QMNestedButton _settings;
         private QMToggleButton _trustRankNameplateButton;
@@ -58,7 +59,7 @@ namespace WingsClient
             Shared.utils = new Utils();
             InitFolders();
             Shared.modules = new Modules.Modules();
-            
+
             new Thread(() => { Patches.Init(HarmonyInstance.Create("Wings.Patches")); }).Start();
         }
 
@@ -165,7 +166,7 @@ namespace WingsClient
                     Shared.settings.SetSetting("askForPortal", "false");
                 }, "AskForPortal");
 
-            _fpsUnlocker = new QMToggleButton(_settings, 1, 1, "FPS Unlocked",
+            _fpsUnlocker = new QMToggleButton(_settings, 0, 3, "FPS Unlocked",
                 delegate { Shared.modules.fpsUnlocker.SetState(true); }, "FPS Locked",
                 delegate { Shared.modules.fpsUnlocker.SetState(false); },
                 "Unlock the FPS (set in settings)");
@@ -213,6 +214,9 @@ namespace WingsClient
                 delegate { Shared.annoy = true; }, "Annoy User\nOff",
                 delegate { Shared.annoy = false; },
                 "Annoys the user you're running commands on");
+            _freezePickups = new QMToggleButton(_exploit, 4, 0, "Freeze Pickups\nOn",
+                delegate { Shared.modules.freezePickups.SetState(true); }, "Freeze Pickups\nOff",
+                delegate { Shared.modules.freezePickups.SetState(false); }, "Stops others from picking up objects");
 
             //_amongUsExploit =
             //    new QMToggleButton(_exploit, 1, 1, "Among Us\nOn", delegate { }, "Among Us\nOff", delegate { },
@@ -256,6 +260,7 @@ namespace WingsClient
                 Directory.CreateDirectory("WingsClient/textures");
                 MelonLogger.Msg("Created Directory 'WingsClient/textures'");
             }
+
             if (!File.Exists("WingsClient/textures/icon.png"))
             {
                 Shared.utils.SaveImage("WingsClient/textures/icon.png",

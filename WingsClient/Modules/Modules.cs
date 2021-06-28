@@ -14,6 +14,7 @@ namespace WingsClient.Modules
         public ItemESP itemEsp;
         public FPSUnlocker fpsUnlocker;
         public ItemOrbit itemOrbit;
+        public FreezePickups freezePickups;
         public bool askForPortal;
         //public HideSelf hideSelf;
 
@@ -26,6 +27,7 @@ namespace WingsClient.Modules
             this.modules.Add(this.speed = new Speed());
             this.modules.Add(this.fpsUnlocker = new FPSUnlocker());
             this.modules.Add(this.itemOrbit = new ItemOrbit());
+            this.modules.Add(this.freezePickups = new FreezePickups());
             //this.modules.Add(this.hideSelf = new HideSelf());
         }
 
