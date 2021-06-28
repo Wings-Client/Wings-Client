@@ -8,6 +8,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC;
+using VRC.SDKBase;
 using WingsClient.Modules;
 
 namespace WingsClient
@@ -34,6 +35,8 @@ namespace WingsClient
 
         private QMNestedButton _world;
         private QMSingleButton _rejoinButton;
+        private QMSingleButton _copyWorldID;
+        private QMSingleButton _joinWorldID;
 
         private QMNestedButton _exploit;
         private QMSingleButton _downloadVRCA;
@@ -78,7 +81,6 @@ namespace WingsClient
         {
             Shared.modules.OnLevelLoad();
         }
-
 
         private void InitButtons()
         {
@@ -140,8 +142,6 @@ namespace WingsClient
                         .SetStrafeSpeed(2f);
                     ;
                 }, "SpeedReset");
-
-
             _trustRankNameplateButton = new QMToggleButton(_settings, 1, 0, "TrustRankNameplate\nOn",
                 delegate()
                 {
@@ -183,6 +183,29 @@ namespace WingsClient
                             RoomManager.field_Internal_Static_ApiWorld_0.id,
                             RoomManager.field_Internal_Static_ApiWorldInstance_0.idWithTags);
                 }, "Rejoin World");
+            _copyWorldID = new QMSingleButton(_world, 2, 0, "Copy World ID", delegate
+            {
+                //string id = $"{RoomManager.field_Internal_Static_ApiWorld_0.id}:{RoomManager.field_Internal_Static_ApiWorldInstance_0.idOnly}";
+                string id = RoomManager.field_Internal_Static_ApiWorld_0.id;
+                System.Windows.Forms.Clipboard.SetText(id);
+                MelonLogger.Msg("World ID: " + id + "\nCopied to clipboard.");
+            }, "Copy the world's ID");
+
+            /*
+            _joinWorldID = new QMSingleButton(_world, 3, 0, "Join World From Clipboard", delegate
+            {
+                string id = System.Windows.Forms.Clipboard.GetText().Trim();
+                string[] split = id.Split(':');
+
+                if (split.Length != 2)
+                {
+                    MelonLogger.Error("Invalid World ID / Cannot Join");
+                    return;
+                }
+
+                new PortalInternal().Method_Private_Void_String_String_PDM_0(split[0], split[1]);
+            }, "Join the provided world's ID");
+            */
 
             _teleport = new QMSingleButton("UserInteractMenu", 1, 3, "Teleport",
                 delegate()

@@ -14,6 +14,7 @@ namespace WingsClient
         public static string[] shaderBlacklist;
         
         public static bool annoy;
+        public static bool useClipboard;
         
         private static Player targetPlayer;
 
