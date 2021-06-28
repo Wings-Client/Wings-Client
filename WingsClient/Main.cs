@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
 using Harmony;
+using UnhollowerRuntimeLib;
 using Il2CppSystem.IO;
 using MelonLoader;
 using RubyButtonAPI;
 using System.Threading;
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
-using VRC;
+using UnityEngine.Networking;
 using VRC.SDKBase;
 using WingsClient.Modules;
+using Player = VRC.Player;
 
 namespace WingsClient
 {
@@ -41,6 +44,7 @@ namespace WingsClient
         private QMNestedButton _exploit;
         private QMSingleButton _downloadVRCA;
         private QMToggleButton _itemOrbit;
+        private QMSingleButton _downloadVRCW;
 
         private QMToggleButton _annoyUser;
 
@@ -191,7 +195,7 @@ namespace WingsClient
                 MelonLogger.Msg("World ID: " + id + "\nCopied to clipboard.");
             }, "Copy the world's ID");
 
-            /*
+
             _joinWorldID = new QMSingleButton(_world, 3, 0, "Join World From Clipboard", delegate
             {
                 string id = System.Windows.Forms.Clipboard.GetText().Trim();
@@ -205,7 +209,7 @@ namespace WingsClient
 
                 new PortalInternal().Method_Private_Void_String_String_PDM_0(split[0], split[1]);
             }, "Join the provided world's ID");
-            */
+
 
             _teleport = new QMSingleButton("UserInteractMenu", 1, 3, "Teleport",
                 delegate()
@@ -228,6 +232,10 @@ namespace WingsClient
                 {
                     Application.OpenURL(VRCPlayer.field_Internal_Static_VRCPlayer_0.prop_ApiAvatar_1.assetUrl);
                 }, "download VRCA");
+
+            _downloadVRCW = new QMSingleButton(_exploit, 1, 1, "Download VRCW",
+                delegate { Application.OpenURL(RoomManager.field_Internal_Static_ApiWorld_0.assetUrl); },
+                "Download VRCW");
 
             _itemOrbit = new QMToggleButton(_exploit, 2, 0, "Item Orbit\nOn",
                 delegate { Shared.modules.itemOrbit.SetState(true); }, "Item Orbit\nOff",
