@@ -87,12 +87,17 @@ namespace WingsClient
             _menuButton = new QMNestedButton("ShortcutMenu", 0, 0, "", "Wings Client Menu", Color.white, Color.white);
             Shared.utils.SetImage(_menuButton.getMainButton().getGameObject().GetComponent<Image>(),
                 "WingsClient/textures/icon.png", Color.white);
-            Shared.utils.SetImage(
-                QuickMenu.prop_QuickMenu_0.transform.Find("QuickMenu_NewElements/_Background/Panel")
-                    .GetComponent<Image>(), "WingsClient/textures/background.png",
-                new Color(0.75f, 0.75f, 0.75f, 0.75f));
-            //"https://avatars.githubusercontent.com/u/85594022"
+            bool useWingsClientBackground;
+            bool.TryParse(Shared.settings.GetSetting("useWingsClientBackground", "true"), out useWingsClientBackground);
+            if (useWingsClientBackground)
+            {
+                Shared.utils.SetImage(
+                    QuickMenu.prop_QuickMenu_0.transform.Find("QuickMenu_NewElements/_Background/Panel")
+                        .GetComponent<Image>(), "WingsClient/textures/background.png",
+                    new Color(0.75f, 0.75f, 0.75f, 0.75f));
+            }
 
+            //"https://avatars.githubusercontent.com/u/85594022"
             //_menuButton.getMainButton().setIntractable();
 
             _movement = new QMNestedButton(_menuButton, 1, 0, "Movement", "Movement Menu");

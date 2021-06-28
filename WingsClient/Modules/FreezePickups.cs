@@ -5,7 +5,6 @@ namespace WingsClient.Modules
     public static class FreezePickups
     {
         public static bool active;
-        [ModuleLoader.UIToggle("Freeze\nPickups", "Prevent anyone from moving pickups", 1)]
         public static bool Active {
             get => active;
             set => OnStateChange(active = value);
