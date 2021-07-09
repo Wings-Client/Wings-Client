@@ -189,8 +189,7 @@ namespace WingsClient
                 }, "Rejoin World");
             _copyWorldID = new QMSingleButton(_world, 2, 0, "Copy World ID", delegate
             {
-                //string id = $"{RoomManager.field_Internal_Static_ApiWorld_0.id}:{RoomManager.field_Internal_Static_ApiWorldInstance_0.idOnly}";
-                string id = RoomManager.field_Internal_Static_ApiWorld_0.id;
+                string id = $"{RoomManager.field_Internal_Static_ApiWorld_0.id}:{RoomManager.field_Internal_Static_ApiWorldInstance_0.idWithTags}";
                 System.Windows.Forms.Clipboard.SetText(id);
                 MelonLogger.Msg("World ID: " + id + "\nCopied to clipboard.");
             }, "Copy the world's ID");
