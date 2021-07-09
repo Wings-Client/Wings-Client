@@ -46,6 +46,7 @@ namespace WingsClient
         private QMSingleButton _downloadVRCA;
         private QMToggleButton _itemOrbit;
         private QMSingleButton _downloadVRCW;
+        private QMSingleButton _spawnPrefab;
 
         private QMToggleButton _annoyUser;
 
@@ -69,10 +70,10 @@ namespace WingsClient
             Shared.modules = new Modules.Modules();
 
             new Thread(() => { Patches.Init(new HarmonyInstance("Wings.Patches")); }).Start();
-            DoAfterUiManagerInit(delegate () { VRChat_OnUiManagerInit(); });
+            DoAfterUiManagerInit(delegate() { VRChat_OnUiManagerInit(); });
         }
-        
-       
+
+
         public void VRChat_OnUiManagerInit()
         {
             InitButtons();
@@ -192,7 +193,8 @@ namespace WingsClient
                 }, "Rejoin World");
             _copyWorldID = new QMSingleButton(_world, 2, 0, "Copy World ID", delegate
             {
-                string id = $"{RoomManager.field_Internal_Static_ApiWorld_0.id}:{RoomManager.field_Internal_Static_ApiWorldInstance_0.instanceId}";
+                string id =
+                    $"{RoomManager.field_Internal_Static_ApiWorld_0.id}:{RoomManager.field_Internal_Static_ApiWorldInstance_0.instanceId}";
                 System.Windows.Forms.Clipboard.SetText(id);
                 MelonLogger.Msg("World ID: " + id + "\nCopied to clipboard.");
             }, "Copy the world's ID");
@@ -238,6 +240,10 @@ namespace WingsClient
             _downloadVRCW = new QMSingleButton(_exploit, 1, 1, "Download VRCW",
                 delegate { Application.OpenURL(RoomManager.field_Internal_Static_ApiWorldInstance_0.world.assetUrl); },
                 "Download VRCW");
+
+            _spawnPrefab = new QMSingleButton(_exploit, 1, 2, "Spawn Dynamic Prefab",
+                delegate { Utils.SpawnDynamicPrefab(); },
+                "Spawns a dynamic prefab on either you or your target. Checks if annoy is enabled.");
 
             _itemOrbit = new QMToggleButton(_exploit, 2, 0, "Item Orbit\nOn",
                 delegate { Shared.modules.itemOrbit.SetState(true); }, "Item Orbit\nOff",

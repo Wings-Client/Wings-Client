@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using Il2CppSystem.Collections.Generic;
 using Il2CppSystem.IO;
@@ -8,12 +9,15 @@ using MelonLoader;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC;
+using VRC.SDKBase;
 
 namespace WingsClient
 {
     public class Utils
     {
         private static Action<Player> requestedAction;
+        private VRC_SceneDescriptor descriptor;
+        private string[] cachedPrefabs;
 
         public static string SHA256(string unencrypted)
         {
@@ -97,6 +101,31 @@ namespace WingsClient
             }
 
             return null;
+        }
+
+        public static void SpawnDynamicPrefab()
+        {
+            if (descriptor is null)
+            {
+                descriptor = UnityEngine.Object.FindObjectOfType<VRC_SceneDescriptor>();
+                cachedPrefabs = descriptor.DynamicPrefabs.ToArray().Where(p => p?.name != null).Select(p => p.name).ToArray();
+            }
+
+            if (descriptor is null)
+                MelonLogger.Msg("Failed to find scene descriptor");
+            else
+            {
+                VRC.Player target = Shared.TargetPlayer ?? VRC.Player.prop_Player_0;
+
+                if (cachedPrefabs.Length > 0)
+                    Networking.Instantiate(VRC_EventHandler.VrcBroadcastType.Always,
+                        cachedPrefabs[0], 
+                        Shared.annoy 
+                            ? target.field_Private_VRCPlayerApi_0.GetBonePosition(HumanBodyBones.Head)
+                            : target.transform.position,
+                        target.transform.rotation);
+                else MelonLogger.Msg("World has no dynamic prefabs.");
+            }
         }
 
         public static class Colors
