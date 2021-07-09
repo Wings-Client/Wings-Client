@@ -16,8 +16,8 @@ namespace WingsClient
     public class Utils
     {
         private static Action<Player> requestedAction;
-        private VRC_SceneDescriptor descriptor;
-        private string[] cachedPrefabs;
+        private static VRC_SceneDescriptor descriptor;
+        public static string[] cachedPrefabs;
 
         public static string SHA256(string unencrypted)
         {
@@ -103,7 +103,7 @@ namespace WingsClient
             return null;
         }
 
-        public static void SpawnDynamicPrefab()
+        public void SpawnDynamicPrefab()
         {
             if (descriptor is null)
             {
@@ -127,6 +127,12 @@ namespace WingsClient
                 else MelonLogger.Msg("World has no dynamic prefabs.");
             }
         }
+
+        public void ClearCache()
+        {
+            cachedPrefabs = null;
+        }
+        
 
         public static class Colors
         {

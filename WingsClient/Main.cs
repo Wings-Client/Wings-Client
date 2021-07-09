@@ -88,7 +88,8 @@ namespace WingsClient
         public override void OnSceneWasLoaded(int buildIndex, string sceneName)
         {
             Shared.modules.OnLevelLoad();
-        }
+            Shared.utils.ClearCache();
+    }
 
         private void InitButtons()
         {
@@ -242,7 +243,7 @@ namespace WingsClient
                 "Download VRCW");
 
             _spawnPrefab = new QMSingleButton(_exploit, 1, 2, "Spawn Dynamic Prefab",
-                delegate { Utils.SpawnDynamicPrefab(); },
+                delegate { Shared.utils.SpawnDynamicPrefab(); },
                 "Spawns a dynamic prefab on either you or your target. Checks if annoy is enabled.");
 
             _itemOrbit = new QMToggleButton(_exploit, 2, 0, "Item Orbit\nOn",
