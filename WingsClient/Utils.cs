@@ -29,7 +29,7 @@ namespace WingsClient
 
         public static void SelectPlayer(Player user)
         {
-            QuickMenu.prop_QuickMenu_0.Method_Public_Void_Player_PDM_0(user);
+            QuickMenu.prop_QuickMenu_0.Method_Public_Void_Player_0(user);
         }
 
         public static void GetEachPlayer(Action<Player> act)
@@ -80,7 +80,7 @@ namespace WingsClient
             Action action2)
         {
             VRCUiPopupManager.field_Private_Static_VRCUiPopupManager_0
-                .Method_Public_Void_String_String_String_Action_String_Action_Action_1_VRCUiPopup_2(title, Content,
+                .Method_Public_Void_String_String_String_Action_String_Action_Action_1_VRCUiPopup_1(title, Content,
                     buttonname, action, button2, action2, null);
         }
         

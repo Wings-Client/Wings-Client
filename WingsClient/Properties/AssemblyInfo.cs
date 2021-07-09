@@ -14,5 +14,5 @@ using MelonLoader;
 [assembly: ComVisible(false)]
 [assembly: Guid("95A4544E-85BF-4E67-9968-AB1ED9BCA179")]
 
-[assembly: MelonInfo(typeof(WingsClient.WingsClient), "WingsClient (Free)", "1.0.2", "Smaltin & Literal", "")]
+[assembly: MelonInfo(typeof(WingsClient.WingsClient), "WingsClient (Free)", "1.0.3", "Smaltin & Literal", "")]
 [assembly: MelonGame("VRChat", "VRChat")]

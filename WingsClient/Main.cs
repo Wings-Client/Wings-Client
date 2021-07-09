@@ -6,6 +6,7 @@ using Il2CppSystem.IO;
 using MelonLoader;
 using RubyButtonAPI;
 using System.Threading;
+using Il2CppSystem.Collections;
 using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,7 +17,7 @@ using Player = VRC.Player;
 
 namespace WingsClient
 {
-    public class WingsClient : MelonMod
+    public class WingsClient : CustomizedMelonMod
     {
         private QMNestedButton _menuButton;
         private QMSingleButton _forceQuitButton;
@@ -67,10 +68,12 @@ namespace WingsClient
             InitFolders();
             Shared.modules = new Modules.Modules();
 
-            new Thread(() => { Patches.Init(HarmonyInstance.Create("Wings.Patches")); }).Start();
+            new Thread(() => { Patches.Init(new HarmonyInstance("Wings.Patches")); }).Start();
+            DoAfterUiManagerInit(delegate () { VRChat_OnUiManagerInit(); });
         }
-
-        public override void VRChat_OnUiManagerInit()
+        
+       
+        public void VRChat_OnUiManagerInit()
         {
             InitButtons();
             RemoveAds();
@@ -185,11 +188,11 @@ namespace WingsClient
                     VRCFlowManager.prop_VRCFlowManager_0
                         .Method_Public_Void_String_String_WorldTransitionInfo_Action_1_String_Boolean_0(
                             RoomManager.field_Internal_Static_ApiWorld_0.id,
-                            RoomManager.field_Internal_Static_ApiWorldInstance_0.idWithTags);
+                            RoomManager.field_Internal_Static_ApiWorldInstance_0.instanceId);
                 }, "Rejoin World");
             _copyWorldID = new QMSingleButton(_world, 2, 0, "Copy World ID", delegate
             {
-                string id = $"{RoomManager.field_Internal_Static_ApiWorld_0.id}:{RoomManager.field_Internal_Static_ApiWorldInstance_0.idWithTags}";
+                string id = $"{RoomManager.field_Internal_Static_ApiWorld_0.id}:{RoomManager.field_Internal_Static_ApiWorldInstance_0.instanceId}";
                 System.Windows.Forms.Clipboard.SetText(id);
                 MelonLogger.Msg("World ID: " + id + "\nCopied to clipboard.");
             }, "Copy the world's ID");
@@ -233,7 +236,7 @@ namespace WingsClient
                 }, "download VRCA");
 
             _downloadVRCW = new QMSingleButton(_exploit, 1, 1, "Download VRCW",
-                delegate { Application.OpenURL(RoomManager.field_Internal_Static_ApiWorld_0.assetUrl); },
+                delegate { Application.OpenURL(RoomManager.field_Internal_Static_ApiWorldInstance_0.world.assetUrl); },
                 "Download VRCW");
 
             _itemOrbit = new QMToggleButton(_exploit, 2, 0, "Item Orbit\nOn",
