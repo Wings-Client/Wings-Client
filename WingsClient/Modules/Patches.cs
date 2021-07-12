@@ -6,15 +6,12 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using AmplitudeSDKWrapper;
-using ExitGames.Client.Photon;
 using Harmony;
-using Il2CppSystem.Collections;
 using MelonLoader;
-using RubyButtonAPI;
 using UnityEngine;
 using VRC.Core;
 
-namespace WingsClient
+namespace WingsClient.Modules
 {
     class Patches
     {
