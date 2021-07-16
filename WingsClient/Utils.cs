@@ -33,7 +33,7 @@ namespace WingsClient
 
         public static void SelectPlayer(Player user)
         {
-            QuickMenu.prop_QuickMenu_0.Method_Public_Void_Player_0(user);
+            QuickMenu.prop_QuickMenu_0.Method_Public_Void_Player_PDM_0(user);
         }
 
         public static void GetEachPlayer(Action<Player> act)
@@ -133,7 +133,22 @@ namespace WingsClient
             cachedPrefabs = null;
         }
         
-
+        public static PlayerManager PlayerManager
+        {
+            get
+            {
+                return PlayerManager.field_Private_Static_PlayerManager_0;
+            }
+        }
+        
+        public static QuickMenu QuickMenu
+        {
+            get
+            {
+                return QuickMenu.prop_QuickMenu_0;
+            }
+        }
+        
         public static class Colors
         {
             public static readonly Color primary = new Color(0.34f, 0f, 0.65f);
@@ -167,6 +182,8 @@ namespace WingsClient
             public static readonly Color orange = new Color(1f, 0.65f, 0f);
 
             public static readonly Color white = new Color(1f, 1f, 1f);
+            
+            
         }
     }
 }

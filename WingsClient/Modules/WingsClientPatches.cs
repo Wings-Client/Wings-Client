@@ -13,7 +13,7 @@ using VRC.Core;
 
 namespace WingsClient.Modules
 {
-    class Patches
+    class WingsClientPatches
     {
         private static string _newHWID = "";
         //private static QMSingleButton ForceClone;
@@ -23,13 +23,13 @@ namespace WingsClient.Modules
             try
             {
                 harmony.Patch(typeof(SystemInfo).GetProperty("deviceUniqueIdentifier")?.GetGetMethod(),
-                    new HarmonyMethod(AccessTools.Method(typeof(Patches), nameof(FakeHWID))));
+                    new HarmonyMethod(AccessTools.Method(typeof(WingsClientPatches), nameof(FakeHWID))));
                 harmony.Patch(typeof(AmplitudeWrapper).GetMethod("PostEvents"),
-                    new HarmonyMethod(AccessTools.Method(typeof(Patches), nameof(VoidPatch))));
+                    new HarmonyMethod(AccessTools.Method(typeof(WingsClientPatches), nameof(VoidPatch))));
                 harmony.Patch(
                     typeof(AmplitudeWrapper).GetMethods().First((MethodInfo x) =>
                         x.Name == "LogEvent" && x.GetParameters().Length == 4),
-                    new HarmonyMethod(AccessTools.Method(typeof(Patches), nameof(VoidPatch))));
+                    new HarmonyMethod(AccessTools.Method(typeof(WingsClientPatches), nameof(VoidPatch))));
                 MelonLogger.Msg("[Patch] Analytics");
             }
             catch
@@ -64,7 +64,7 @@ namespace WingsClient.Modules
             try
             {
                 harmony.Patch(typeof(PortalTrigger).GetMethod("OnTriggerEnter"),
-                    new HarmonyMethod(AccessTools.Method(typeof(Patches), nameof(EnterPortal))));
+                    new HarmonyMethod(AccessTools.Method(typeof(WingsClientPatches), nameof(EnterPortal))));
                 MelonLogger.Msg(ConsoleColor.Red, "[Patch] Portal");
             }
             catch
@@ -240,9 +240,9 @@ namespace WingsClient.Modules
 
         private static bool FakeHWID(ref string __result)
         {
-            if (Patches._newHWID == "")
+            if (WingsClientPatches._newHWID == "")
             {
-                Patches._newHWID = KeyedHashAlgorithm.Create().ComputeHash(Encoding.UTF8.GetBytes(string.Format(
+                WingsClientPatches._newHWID = KeyedHashAlgorithm.Create().ComputeHash(Encoding.UTF8.GetBytes(string.Format(
                     "{0}A-{1}{2}-{3}{4}-{5}{6}-3C-1F", new object[]
                     {
                         new System.Random().Next(0, 9),
@@ -257,10 +257,10 @@ namespace WingsClient.Modules
                     byte b = x;
                     return b.ToString("x2");
                 }).Aggregate((string x, string y) => x + y);
-                MelonLogger.Msg("[HWID] new " + Patches._newHWID);
+                MelonLogger.Msg("[HWID] new " + WingsClientPatches._newHWID);
             }
 
-            __result = Patches._newHWID;
+            __result = WingsClientPatches._newHWID;
             return false;
         }
 
@@ -301,7 +301,7 @@ namespace WingsClient.Modules
                     else
                     {
                         MelonUtils.NativeHookAttach((IntPtr) ((void*) (&procAddress)),
-                            AccessTools.Method(typeof(Patches), "NoSteamFail", null, null).MethodHandle
+                            AccessTools.Method(typeof(WingsClientPatches), "NoSteamFail", null, null).MethodHandle
                                 .GetFunctionPointer());
                         //MelonLogger.Msg("[Patch] SteamBypass Procedure " + text + " was patched"); //for debugging
                     }

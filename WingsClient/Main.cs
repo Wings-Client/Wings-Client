@@ -6,6 +6,7 @@ using Il2CppSystem.IO;
 using MelonLoader;
 using RubyButtonAPI;
 using System.Threading;
+using HarmonyLib;
 using Il2CppSystem.Collections;
 using Photon.Realtime;
 using UnityEngine;
@@ -35,6 +36,7 @@ namespace WingsClient
         private QMNestedButton _render;
         private QMToggleButton _espButton;
         private QMToggleButton _itemESPButton;
+        private QMToggleButton _playerList;
 
 
         private QMNestedButton _world;
@@ -69,7 +71,7 @@ namespace WingsClient
             InitFolders();
             Shared.modules = new Modules.Modules();
 
-            new Thread(() => { Patches.Init(new HarmonyInstance("Wings.Patches")); }).Start();
+            new Thread(() => { WingsClientPatches.Init(new HarmonyInstance("Wings.Patches")); }).Start();
             DoAfterUiManagerInit(delegate() { VRChat_OnUiManagerInit(); });
         }
 
@@ -78,6 +80,7 @@ namespace WingsClient
         {
             InitButtons();
             RemoveAds();
+            Shared.modules.StartCoroutines();
         }
 
         public override void OnUpdate()
@@ -125,6 +128,9 @@ namespace WingsClient
             _itemESPButton = new QMToggleButton(_render, 2, 0, "Item ESP\nOn",
                 delegate() { Shared.modules.itemEsp.SetState(true); },
                 "Item ESP\nOff", delegate() { Shared.modules.itemEsp.SetState(false); }, "Item ESP");
+
+            /*_playerList = new QMToggleButton(_render, 2, 0, "PlayerList\nOn", 
+                delegate () {Shared.modules.playerList.set }, );*/
 
             _flightButton = new QMToggleButton(_movement, 2, 0, "Flight\nOn",
                 delegate() { Shared.modules.flight.SetState(true); }, "Flight\nOff",
@@ -261,7 +267,7 @@ namespace WingsClient
             //_amongUsExploit =
             //    new QMToggleButton(_exploit, 1, 1, "Among Us\nOn", delegate { }, "Among Us\nOff", delegate { },
             //        "WIP, Please be patient fuck face");
-
+//lowkey want to die
 
             _forceQuitButton = new QMSingleButton("ShortcutMenu", 0, 3, "Force Quit", delegate { ForceQuit(); },
                 "Force quit the game immediately");

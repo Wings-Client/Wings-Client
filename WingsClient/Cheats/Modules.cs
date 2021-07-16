@@ -1,6 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using MelonLoader;
+using UnityEngine.Playables;
 using VRC;
+using WingsClient.Cheats;
 
 namespace WingsClient.Modules
 {
@@ -16,6 +21,8 @@ namespace WingsClient.Modules
         public ItemOrbit itemOrbit;
         public FreezePickups freezePickups;
         public bool askForPortal;
+
+        public PlayerList playerList;
         //public HideSelf hideSelf;
 
         public Modules()
@@ -28,13 +35,40 @@ namespace WingsClient.Modules
             this.modules.Add(this.fpsUnlocker = new FPSUnlocker());
             this.modules.Add(this.itemOrbit = new ItemOrbit());
             this.modules.Add(this.freezePickups = new FreezePickups());
+            this.modules.Add(this.playerList = new PlayerList());
             //this.modules.Add(this.hideSelf = new HideSelf());
         }
 
         public void StartCoroutines()
         {
+            MelonCoroutines.Start(Initialize());
             //MelonCoroutines.Start(Shared.modules.portal.AutoPortal());
         }
+
+        private IEnumerator Initialize()
+        {
+            while (true)
+            {
+                try
+                {
+                    NetworkManager.field_Internal_Static_NetworkManager_0.field_Internal_VRCEventDelegate_1_Player_0.field_Private_HashSet_1_UnityAction_1_T_0.Add(new Action<Player>(player => OnPlayerJoined(player)));
+                    //LogWithPadding("OnPlayerJoined", true);
+                }
+                catch
+                {
+                }
+
+                try
+                {
+                    NetworkManager.field_Internal_Static_NetworkManager_0.field_Internal_VRCEventDelegate_1_Player_1.field_Private_HashSet_1_UnityAction_1_T_0.Add(new Action<Player>(player => OnPlayerLeft(player)));
+                    //  LogWithPadding("OnPlayerLeft", true);
+                }
+                catch
+                {
+                }
+            }
+        }
+
 
         public void OnPlayerJoined(Player player)
         {
