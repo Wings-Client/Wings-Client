@@ -25,7 +25,7 @@ namespace RubyButtonAPI
     public static class QMButtonAPI
     {
         //REPLACE THIS STRING SO YOUR MENU DOESNT COLLIDE WITH OTHER MENUS
-        public static string identifier = "WingsClient";
+        public static string identifier = "VRCancer";
         public static Color mBackground = Color.red;
         public static Color mForeground = Color.white;
         public static Color bBackground = Color.red;
@@ -334,6 +334,49 @@ namespace RubyButtonAPI
             btnTextsOn[1].text = buttonOffText;
             Text[] btnTextsOff = btnOff.GetComponentsInChildren<Text>();
             btnTextsOff[1].text = buttonOffText;
+        }
+
+    }
+
+    public class QMLable{
+        static private GameObject BaseLabel;
+        public GameObject qmLable;
+        public Text text;
+        private RectTransform rectTransform;
+        private Vector2 ogPos;
+
+        public QMLable(string label, float x, float y, Transform parent, Action OnClick)
+        {
+            if (BaseLabel == null)
+                BaseLabel = QuickMenu.prop_QuickMenu_0.transform.Find("ShortcutMenu/WorldsButton/Text").gameObject;
+
+            GameObject lableObj = UnityEngine.Object.Instantiate<GameObject>(BaseLabel, parent.transform);
+            lableObj.transform.SetParent(parent.transform, false);
+            rectTransform = lableObj.GetComponent<RectTransform>();
+            ogPos = rectTransform.anchoredPosition;
+            setLocation(x, y);
+            lableObj.transform.localScale = Vector3.one;
+            lableObj.transform.localRotation = Quaternion.identity;
+            text = lableObj.GetComponent<Text>();
+            text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            text.fontSize = 64;
+            text.alignment = TextAnchor.UpperLeft;
+            text.color = Color.white;
+            text.supportRichText = true;
+            text.horizontalOverflow = HorizontalWrapMode.Overflow;
+            text.text = label;
+            lableObj.AddComponent<Button>().onClick.AddListener(OnClick);
+            
+            lableObj.transform.GetComponent<RectTransform>().sizeDelta = new Vector3(735f, 0f);
+            lableObj.name = label;
+            qmLable = lableObj;
+        }
+
+        public void setLocation(float x, float y)
+        {
+            rectTransform.anchoredPosition = ogPos;
+            rectTransform.anchoredPosition += Vector2.right * (420 * x);
+            rectTransform.anchoredPosition += Vector2.down * (73.75f * y);
         }
 
     }

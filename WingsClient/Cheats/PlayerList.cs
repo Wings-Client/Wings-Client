@@ -1,104 +1,97 @@
 ﻿using RubyButtonAPI;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 using VRC;
-using WingsClient.Extensions;
-using WingsClient.External;
-using WingsClient.Modules;
+using MelonLoader;
+using VRC.Core;
 using WingsClient.Wrappers;
 
-namespace WingsClient.Cheats
+//mad by four ;)
+
+namespace WingsClient.Modules
 {
     public class PlayerList : BaseModule
     {
-        public static List<string> Players = new List<string>();
+        private List<QMLable> playerList = new List<QMLable>();
 
-        public static MenuText PlayerCount;
-
-        public static List<MenuText> Logs = new List<MenuText>();
-
-        public static float posx = -1220;
-
-        public static float posy = -400f;
-
-        public static List<string> BlockList = new List<string>();
-        public Transform shortcutMenu;
-
-        public override void OnLevelWasLoaded()
+        public override void OnStateChange(bool state)
         {
-            Start();
-        }
-
-
-        public void Start()
-
-        {
-            var num = posy;
-            var parent = Utils.QuickMenu.transform.Find("ShortcutMenu");
-            PlayerCount = new MenuText(shortcutMenu, posx, -500f, "<b>==========Playerlist========== </b>");
-            for (var i = 0; i <= 38; i++)
+			if(state){
+				for (int i = 0; i < PlayerManager.prop_PlayerManager_0.field_Private_List_1_Player_0.ToArray().ToList().Count; i++)
             {
-                var item = new MenuText(shortcutMenu, posx, posy, "");
-                posy += 70f;
+                try
+                {
+                    Player player = PlayerManager.prop_PlayerManager_0.field_Private_List_1_Player_0.ToArray().ToList()[i];
+                    QMLable lable = new QMLable("", 6, playerList.Count, QuickMenu.prop_QuickMenu_0.transform.Find("ShortcutMenu"), new Action(() =>
+                    {
+                        QuickMenu.prop_QuickMenu_0.SelectPlayer(player);
+                    }));
+                    lable.qmLable.name = player.prop_APIUser_0.id;
+                    playerList.Add(lable);
+                }
+                catch { }
             }
-
-            posy = num;
+				MelonCoroutines.Start(LableUpdater());
+			}else{
+				for (int i = 0; i < PlayerManager.prop_PlayerManager_0.field_Private_List_1_Player_0.ToArray().ToList().Count; i++)
+            {
+                try
+                {
+                    Player player = PlayerManager.prop_PlayerManager_0.field_Private_List_1_Player_0.ToArray().ToList()[i];
+                    QMLable lable = playerList.Find(x => x.qmLable.name == player.prop_APIUser_0.id);
+                    GameObject.Destroy(lable.qmLable);
+                    playerList.Remove(lable);
+                }
+                catch { }
+            }
+			}
         }
-
+		
+        public IEnumerator LableUpdater()
+        {
+            while (this.state)
+            {
+                yield return new WaitForSeconds(0.25f);
+                for(int i = 0; i < PlayerManager.prop_PlayerManager_0.field_Private_List_1_Player_0.ToArray().ToList().Count; i++)
+                {
+                    try {
+                        Player player = PlayerManager.prop_PlayerManager_0.field_Private_List_1_Player_0.ToArray().ToList()[i];
+                        if (player.prop_APIUser_0 != APIUser.CurrentUser)
+                        {
+                            QMLable playerLable = playerList.Find(x => x.qmLable.name == player.prop_APIUser_0.id);
+                            playerLable.text.text = "<color=#" + ColorUtility.ToHtmlStringRGB(VRCPlayer.Method_Public_Static_Color_APIUser_0(player.prop_APIUser_0)) + ">" + player.prop_APIUser_0.displayName + "</color> [<color=#ffa500ff>P</color>]: " + player.GetPing() + "ms [<color=#ffa500ff>F</color>] " + player.GetFrames() + (player.GetIsMod() ? "[<color=#a52a2aff>Mod</color>] " : "") + (player.GetIsBot() ? "[<color=#000000ff>Bot</color>] " : "");
+                            playerLable.setLocation(6, i);
+                        }
+                    } catch { }
+                }
+            }
+            yield break;
+        }
+        
         public override void OnPlayerJoined(Player player)
         {
-            AddPlayerToList();
+			if(!this.state)
+				return;
+            QMLable lable = new QMLable("<color=#" + ColorUtility.ToHtmlStringRGB(VRCPlayer.Method_Public_Static_Color_APIUser_0(player.prop_APIUser_0)) + ">" + player.prop_APIUser_0.displayName + "</color>", 6, playerList.Count, QuickMenu.prop_QuickMenu_0.transform.Find("ShortcutMenu"), new Action(() =>
+            {
+                QuickMenu.prop_QuickMenu_0.SelectPlayer(player);
+            }));
+            lable.qmLable.name = player.prop_APIUser_0.id;
+            playerList.Add(lable);
         }
 
         public override void OnPlayerLeft(Player player)
         {
-            AddPlayerToList();
-        }
-
-        public static void AddPlayerToList()
-        {
-            try
-            {
-                Players.Clear();
-                foreach (var Player in Utils.PlayerManager.GetAllPlayers().ToArray())
-                {
-                    string Text;
-                    Text = (Player.GetAPIUser().hasModerationPowers ? "<color=#850700>[MOD]</color> " : "") +
-                           (Player.GetIsBot() ? "<color=#a33333>[BOT]</color> " : "") +
-                           (Player.IsFriend() ? "<color=#ebc400>[F]</color> " : "") +
-                           (Player.GetIsMaster() ? "<color=#3c1769>[M]</color> " : "") +
-                           (Player.GetAPIUser().isSupporter ? "<color=#b66b25>[V+]</color> " : "") +
-                           (Player.GetAPIUser().IsOnMobile ? "<color=#27b02d>[Q]</color> " : "") +
-                           (Player.GetVRCPlayerApi().IsUserInVR()
-                               ? "<color=#00d4f0>[VR]</color> "
-                               : "<color=#00d4f0>[D]</color> ") + "<color=#00d4f0>" + Player.DisplayName() +
-                           "</color>" + " [P] " + Player.GetPingColored() + " [F] " + Player.GetFramesColored();
-                    Players.Insert(0, Text);
-                }
-            }
-            catch
-            {
-            }
-        }
-
-        public static void UpdateText()
-        {
-            try
-            {
-                for (var i = 0; i <= Logs.Count; i++)
-                    try
-                    {
-                        if (Players[i] != null) Logs[i].SetText(Players[i]);
-                    }
-                    catch
-                    {
-                        Logs[i].SetText("");
-                    }
-            }
-            catch
-            {
-            }
+			if(!this.state)
+				return;
+            QMLable lable = playerList.Find(x => x.qmLable.name == player.prop_APIUser_0.id);
+            GameObject.Destroy(lable.qmLable);
+            playerList.Remove(lable);
         }
     }
 }

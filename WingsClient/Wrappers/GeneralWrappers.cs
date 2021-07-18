@@ -69,6 +69,11 @@ namespace WingsClient.Wrappers
             }
             return string.Format("{0}{1}</color>", arg, Instance.GetPing());
         }
+        
+        public static bool GetIsMod(this Player Instance)
+        {
+            return Instance.prop_APIUser_0.hasSuperPowers || Instance.prop_APIUser_0.hasModerationPowers;
+        }
 
         public static string GetPingColored(this Player Instance)
         {

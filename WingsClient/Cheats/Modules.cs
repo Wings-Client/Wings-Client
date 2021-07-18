@@ -5,7 +5,7 @@ using System.Linq;
 using MelonLoader;
 using UnityEngine.Playables;
 using VRC;
-using WingsClient.Cheats;
+using WingsClient.Modules;
 
 namespace WingsClient.Modules
 {
