@@ -3,11 +3,14 @@ using Il2CppSystem.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnhollowerRuntimeLib;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using VRC.UI;
+using BindingFlags = Il2CppSystem.Reflection.BindingFlags;
+using FieldInfo = Il2CppSystem.Reflection.FieldInfo;
 
 namespace RubyButtonAPI
 {

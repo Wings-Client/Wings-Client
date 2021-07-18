@@ -1,15 +1,17 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net;
-using Il2CppSystem.Collections.Generic;
-using Il2CppSystem.IO;
+using System.Security.Cryptography;
+using System.Text;
 using Il2CppSystem.Security.Cryptography;
-using Il2CppSystem.Text;
 using MelonLoader;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC;
 using VRC.SDKBase;
+using HashAlgorithm = System.Security.Cryptography.HashAlgorithm;
+using SHA256Managed = System.Security.Cryptography.SHA256Managed;
 
 namespace WingsClient
 {
@@ -90,7 +92,7 @@ namespace WingsClient
         
         public static Player GetPlayer(string name)
         {
-            List<Player> players = PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0;
+            Il2CppSystem.Collections.Generic.List<Player> players = PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0;
 
             for (int i = 0; i < players.Count; i++)
             {

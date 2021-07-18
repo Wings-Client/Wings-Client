@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using Harmony;
-using UnhollowerRuntimeLib;
-using Il2CppSystem.IO;
 using MelonLoader;
 using RubyButtonAPI;
 using System.Threading;
-using HarmonyLib;
-using Il2CppSystem.Collections;
-using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Networking;
-using VRC.SDKBase;
 using WingsClient.Modules;
+using Directory = System.IO.Directory;
+using File = System.IO.File;
 using Player = VRC.Player;
 
 namespace WingsClient
@@ -168,6 +163,10 @@ namespace WingsClient
                     Shared.modules.trustRankNameplate.SetState(false);
                     Shared.settings.SetSetting("trustRankNameplate", "false");
                 }, "TrustRankNameplate");
+            
+            _playerList = new QMToggleButton(_settings, 3, 0, "PlayerList\nOn",
+                delegate() { Shared.modules.playerList.SetState(true); }, "PLayerList\nOff",
+                delegate() { Shared.modules.playerList.SetState(false); }, "Player List");
 
             _askForPortal = new QMToggleButton(_settings, 2, 0, "AskForPortal\nOn",
                 delegate()
@@ -337,7 +336,7 @@ namespace WingsClient
 
         private static void ForceQuit()
         {
-            Process.GetCurrentProcess().Kill();
+             Process.GetCurrentProcess().Kill();
         }
 
         private static void ForceRestart()

@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using VRC.SDKBase;
+using Object = UnityEngine.Object;
 
 namespace WingsClient.Modules
 {
