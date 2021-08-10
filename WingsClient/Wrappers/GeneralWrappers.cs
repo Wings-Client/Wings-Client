@@ -1,6 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Net;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR;
@@ -36,7 +36,7 @@ namespace WingsClient.Wrappers
 
         public static void AlertPopup(this VRCUiPopupManager manager, string title, string text) => manager.Method_Public_Void_String_String_Single_0(title, text, 10f);
 
-        public static void SelectPlayer(this QuickMenu instance, Player player) => instance.Method_Public_Void_Player_PDM_0(player);
+        public static void SelectPlayer(this QuickMenu instance, Player player) => instance.Method_Public_Void_Player_0(player);
 
         public static void PopupYesNoSquare(string title, string Content, string buttonname, Action action, string button2, Action action2) => VRCUiPopupManager.field_Private_Static_VRCUiPopupManager_0.Method_Public_Void_String_String_String_Action_String_Action_Action_1_VRCUiPopup_0(title, Content, buttonname, action, button2, action2, null);
 
@@ -163,7 +163,7 @@ namespace WingsClient.Wrappers
             try
             {
                 VRCUiPopupManager vrcpopup = GetVRCUiPopupManager();
-                vrcpopup.Method_Private_Void_PDM_0();
+                vrcpopup.Method_Private_Void_0();
             }
             catch { }
         }
@@ -183,7 +183,7 @@ namespace WingsClient.Wrappers
             }
         }
 
-        public static string convert(WebResponse res)
+        public static string Convert(WebResponse res)
         {
             string strResponse = "";
             using (var stream = res.GetResponseStream())

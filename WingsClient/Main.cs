@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Diagnostics;
-using Harmony;
 using MelonLoader;
 using RubyButtonAPI;
 using System.Threading;
-using UnityEngine;
-using UnityEngine.UI;
 using WingsClient.Modules;
 using Directory = System.IO.Directory;
 using File = System.IO.File;
 using Player = VRC.Player;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
+using Il2CppSystem.Diagnostics;
 
 namespace WingsClient
 {
-    public class WingsClient : CustomizedMelonMod
+    public class WingsClient : MelonMod
     {
         private QMNestedButton _menuButton;
         private QMSingleButton _forceQuitButton;
@@ -66,15 +66,20 @@ namespace WingsClient
             InitFolders();
             Shared.modules = new Modules.Modules();
 
-            new Thread(() => { WingsClientPatches.Init(new HarmonyInstance("Wings.Patches")); }).Start();
-            DoAfterUiManagerInit(delegate() { VRChat_OnUiManagerInit(); });
+            new Thread(() => { WingsClientPatches.Init(new HarmonyLib.Harmony("Wings.Patches")); }).Start();
+            MelonCoroutines.Start(VRChat_OnUiManagerInit());
         }
 
 
-        public void VRChat_OnUiManagerInit()
+        public IEnumerator VRChat_OnUiManagerInit()
         {
+            while(VRCUiManager.field_Private_Static_VRCUiManager_0 == null)
+                yield return null;
+
             InitButtons();
             RemoveAds();
+            //GameObject.Destroy(GameObject.Find("UserInterface/QuickMenu/ShortcutMenu/SitButton").gameObject);
+
             Shared.modules.StartCoroutines();
         }
 
@@ -94,7 +99,7 @@ namespace WingsClient
             QuickMenu.prop_QuickMenu_0.GetComponent<BoxCollider>().size += new Vector3(
                 QuickMenu.prop_QuickMenu_0.GetComponent<BoxCollider>().size.x / 2.75f,
                 QuickMenu.prop_QuickMenu_0.GetComponent<BoxCollider>().size.y / 2.25f);
-            _menuButton = new QMNestedButton("ShortcutMenu", 0, 0, "", "Wings Client Menu", Color.white, Color.white);
+            _menuButton = new QMNestedButton("ShortcutMenu", 5, 3, "", "Wings Client Menu", Color.white, Color.white);
             Shared.utils.SetImage(_menuButton.getMainButton().getGameObject().GetComponent<Image>(),
                 "WingsClient/textures/icon.png", Color.white);
             bool useWingsClientBackground;
@@ -124,8 +129,9 @@ namespace WingsClient
                 delegate() { Shared.modules.itemEsp.SetState(true); },
                 "Item ESP\nOff", delegate() { Shared.modules.itemEsp.SetState(false); }, "Item ESP");
 
-            /*_playerList = new QMToggleButton(_render, 2, 0, "PlayerList\nOn", 
-                delegate () {Shared.modules.playerList.set }, );*/
+            _playerList = new QMToggleButton(_settings, 3, 0, "PlayerList\nOn",
+                delegate() { Shared.modules.playerList.SetState(true); }, "PLayerList\nOff",
+                delegate() { Shared.modules.playerList.SetState(false); }, "Player List");
 
             _flightButton = new QMToggleButton(_movement, 2, 0, "Flight\nOn",
                 delegate() { Shared.modules.flight.SetState(true); }, "Flight\nOff",
@@ -268,10 +274,10 @@ namespace WingsClient
             //        "WIP, Please be patient fuck face");
 //lowkey want to die
 
-            _forceQuitButton = new QMSingleButton("ShortcutMenu", 0, 3, "Force Quit", delegate { ForceQuit(); },
+            _forceQuitButton = new QMSingleButton(_settings, 2, 1, "Force Quit", delegate { ForceQuit(); },
                 "Force quit the game immediately");
 
-            _forceRestartButton = new QMSingleButton("ShortcutMenu", 5, 3, "Force Restart",
+            _forceRestartButton = new QMSingleButton(_settings, 1, 1, "Force Restart",
                 delegate { ForceRestart(); },
                 "Force restart the game");
             //Shared.TargetPlayer = Utils.GetPlayer(QuickMenu.prop_QuickMenu_0.field_Private_APIUser_0.displayName);
@@ -338,12 +344,11 @@ namespace WingsClient
         {
              Process.GetCurrentProcess().Kill();
         }
-
         private static void ForceRestart()
         {
             try
             {
-                Process.Start(Environment.CurrentDirectory + "\\VRChat.exe", Environment.CommandLine);
+                System.Diagnostics.Process.Start(Environment.CurrentDirectory + "\\VRChat.exe", Environment.CommandLine);
             }
             catch (Exception e)
             {
@@ -353,4 +358,3 @@ namespace WingsClient
             Process.GetCurrentProcess().Kill();
         }
     }
-}

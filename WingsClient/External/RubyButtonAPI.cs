@@ -391,6 +391,13 @@ namespace RubyButtonAPI
         protected string menuName;
         protected string btnQMLoc;
         protected string btnType;
+        private string v1;
+        private int v2;
+        private int v3;
+        private string v4;
+        private string v5;
+        private object white1;
+        private object white2;
 
         public QMNestedButton(QMNestedButton btnMenu, int btnXLocation, int btnYLocation, String btnText, String btnToolTip, Color? btnBackgroundColor = null, Color? btnTextColor = null, Color? backbtnBackgroundColor = null, Color? backbtnTextColor = null)
         {
@@ -402,6 +409,17 @@ namespace RubyButtonAPI
         {
             btnQMLoc = btnMenu;
             initButton(btnXLocation, btnYLocation, btnText, btnToolTip, btnBackgroundColor, btnTextColor, backbtnBackgroundColor, backbtnTextColor);
+        }
+
+        public QMNestedButton(string v1, int v2, int v3, string v4, string v5, object white1, object white2)
+        {
+            this.v1 = v1;
+            this.v2 = v2;
+            this.v3 = v3;
+            this.v4 = v4;
+            this.v5 = v5;
+            this.white1 = white1;
+            this.white2 = white2;
         }
 
         public void initButton(int btnXLocation, int btnYLocation, String btnText, String btnToolTip, Color? btnBackgroundColor = null, Color? btnTextColor = null, Color? backbtnBackgroundColor = null, Color? backbtnTextColor = null)

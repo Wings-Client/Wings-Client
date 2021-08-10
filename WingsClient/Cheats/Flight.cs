@@ -3,6 +3,7 @@ using UnityEngine.XR;
 using VRC;
 using VRC.Animation;
 using VRC.SDKBase;
+using WingsClient.Modules;
 
 namespace WingsClient.Modules
 {

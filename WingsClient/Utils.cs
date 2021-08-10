@@ -1,15 +1,19 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using Il2CppSystem;
+using Il2CppSystem.Drawing;
+using Il2CppSystem.Net;
 using Il2CppSystem.Security.Cryptography;
 using MelonLoader;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC;
 using VRC.SDKBase;
+using Action = System.Action;
+using Exception = System.Exception;
 using HashAlgorithm = System.Security.Cryptography.HashAlgorithm;
 using SHA256Managed = System.Security.Cryptography.SHA256Managed;
 
@@ -17,7 +21,7 @@ namespace WingsClient
 {
     public class Utils
     {
-        private static Action<Player> requestedAction;
+        private static System.Action<Player> requestedAction;
         private static VRC_SceneDescriptor descriptor;
         public static string[] cachedPrefabs;
 
@@ -35,10 +39,10 @@ namespace WingsClient
 
         public static void SelectPlayer(Player user)
         {
-            QuickMenu.prop_QuickMenu_0.Method_Public_Void_Player_PDM_0(user);
+            QuickMenu.prop_QuickMenu_0.Method_Public_Void_Player_0(user);
         }
 
-        public static void GetEachPlayer(Action<Player> act)
+        public static void GetEachPlayer(System.Action<Player> act)
         {
             Utils.requestedAction = act;
             foreach (Player obj in PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0)
@@ -47,7 +51,7 @@ namespace WingsClient
             }
         }
 
-        public void SetImage(Image img, string path, Color color)
+        public void SetImage(Image img, string path, UnityEngine.Color color)
         {
             try
             {
@@ -68,9 +72,9 @@ namespace WingsClient
 
         public void SaveImage(string fileName, string webLocation)
         {
-            using (WebClient webClient = new WebClient())
+            using (System.Net.WebClient webClient = new System.Net.WebClient())
             {
-                Uri uri = new Uri(webLocation);
+                System.Uri uri = new System.Uri(webLocation);
                 try
                 {
                     webClient.DownloadFileAsync(uri, fileName);
@@ -153,37 +157,37 @@ namespace WingsClient
         
         public static class Colors
         {
-            public static readonly Color primary = new Color(0.34f, 0f, 0.65f);
+            public static readonly UnityEngine.Color primary = new UnityEngine.Color(0.34f, 0f, 0.65f);
 
-            public static readonly Color highlight = new Color(0.8f, 0.8f, 1f);
+            public static readonly UnityEngine.Color highlight = new UnityEngine.Color(0.8f, 0.8f, 1f);
 
-            public static readonly Color legendary = new Color(1f, 0.41f, 0.7f);
+            public static readonly UnityEngine.Color legendary = new UnityEngine.Color(1f, 0.41f, 0.7f);
 
-            public static readonly Color veteran = new Color(1f, 0.82f, 0f);
+            public static readonly UnityEngine.Color veteran = new UnityEngine.Color(1f, 0.82f, 0f);
 
-            public static readonly Color trusted = new Color(0.75f, 0.26f, 0.9f);
+            public static readonly UnityEngine.Color trusted = new UnityEngine.Color(0.75f, 0.26f, 0.9f);
 
-            public static readonly Color known = new Color(1f, 0.48f, 0.25f);
+            public static readonly UnityEngine.Color known = new UnityEngine.Color(1f, 0.48f, 0.25f);
 
-            public static readonly Color user = new Color(0.17f, 0.81f, 0.36f);
+            public static readonly UnityEngine.Color user = new UnityEngine.Color(0.17f, 0.81f, 0.36f);
 
-            public static readonly Color newuser = new Color(0.09f, 0.47f, 1f);
+            public static readonly UnityEngine.Color newuser = new UnityEngine.Color(0.09f, 0.47f, 1f);
 
-            public static readonly Color visitor = new Color(0.8f, 0.8f, 0.8f);
+            public static readonly UnityEngine.Color visitor = new UnityEngine.Color(0.8f, 0.8f, 0.8f);
 
-            public static readonly Color quest = new Color(0f, 0.87f, 0.25f);
+            public static readonly UnityEngine.Color quest = new UnityEngine.Color(0f, 0.87f, 0.25f);
 
-            public static readonly Color black = new Color(0f, 0f, 0f);
+            public static readonly UnityEngine.Color black = new UnityEngine.Color(0f, 0f, 0f);
 
-            public static readonly Color red = new Color(1f, 0f, 0f);
+            public static readonly UnityEngine.Color red = new UnityEngine.Color(1f, 0f, 0f);
 
-            public static readonly Color green = new Color(0f, 1f, 0f);
+            public static readonly UnityEngine.Color green = new UnityEngine.Color(0f, 1f, 0f);
 
-            public static readonly Color aqua = new Color(0f, 1f, 1f);
+            public static readonly UnityEngine.Color aqua = new UnityEngine.Color(0f, 1f, 1f);
 
-            public static readonly Color orange = new Color(1f, 0.65f, 0f);
+            public static readonly UnityEngine.Color orange = new UnityEngine.Color(1f, 0.65f, 0f);
 
-            public static readonly Color white = new Color(1f, 1f, 1f);
+            public static readonly UnityEngine.Color white = new UnityEngine.Color(1f, 1f, 1f);
             
             
         }

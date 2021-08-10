@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using AmplitudeSDKWrapper;
-using Harmony;
+using HarmonyLib;
 using MelonLoader;
 using UnityEngine;
 using VRC.Core;
@@ -18,7 +18,7 @@ namespace WingsClient.Modules
         private static string _newHWID = "";
         //private static QMSingleButton ForceClone;
 
-        public static void Init(Harmony.HarmonyInstance harmony)
+        public static void Init(HarmonyLib.Harmony harmony)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace WingsClient.Modules
             }
             catch
             {
-                MelonLogger.Msg(ConsoleColor.Red, "[Patch] Portal Error while Patching");
+                MelonLogger.Msg(ConsoleColor.Red, "[Patch] Something fucked up in patching the portal instance.");
             }
 
 

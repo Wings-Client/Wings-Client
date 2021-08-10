@@ -6,6 +6,7 @@ using MelonLoader;
 using UnityEngine.Playables;
 using VRC;
 using WingsClient.Modules;
+using UnityEngine;
 
 namespace WingsClient.Modules
 {
@@ -66,6 +67,7 @@ namespace WingsClient.Modules
                 catch
                 {
                 }
+                yield return new WaitForEndOfFrame();
             }
         }
 
